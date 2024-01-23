@@ -29,6 +29,6 @@ export function processTweet(tweet: Tweet): FormattedTweet {
 export function processBroadcastedTweet(tweet: Tweet, profile: Profile): FormattedTweet {
   const processedTweet = processTweet(tweet);
   const isLiked = false;
-  const isMine = profile?.identifier === tweet.identifier;
+  const isMine = profile?.identifier === tweet?.identifier;
   return { ...processedTweet, isMine, isLiked };
 }

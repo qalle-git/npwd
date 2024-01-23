@@ -81,6 +81,7 @@ export enum CallEvents {
   SEND_ALERT = 'npwd:callSetAlert',
   SAVE_CALL = 'npwd:saveCall',
   TOGGLE_MUTE_CALL = 'npwd:toggleMuteCall',
+  HANGUP_CALL = 'npwd:hangupCall',
 }
 
 interface IncomingCallerCtx {

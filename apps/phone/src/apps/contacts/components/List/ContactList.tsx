@@ -13,8 +13,18 @@ import { Phone, MessageSquare, Plus } from 'lucide-react';
 import { List, ListItem, NPWDButton } from '@npwd/keyos';
 import { initials } from '@utils/misc';
 
-export const ContactList: React.FC = () => {
-  const filteredContacts = useFilteredContacts();
+export interface ContactProps {
+  contacts?: Contact[];
+
+  viewOnly?: boolean;
+}
+
+export interface ContactItemProps extends Contact {
+  viewOnly?: boolean;
+}
+
+export const ContactList: React.FC<ContactProps> = (props) => {
+  const filteredContacts = props.contacts ?? useFilteredContacts();
   const history = useHistory();
 
   // FIXME: This should be reduced before being passed to the component
@@ -31,14 +41,16 @@ export const ContactList: React.FC = () => {
       <div className="sticky top-0 z-50">
         <div className="flex items-center space-x-2 bg-neutral-100 px-4 dark:bg-neutral-900">
           <SearchContacts />
-          <NPWDButton
-            size="icon"
-            className="rounded-full p-2 text-neutral-900"
-            variant="ghost"
-            onClick={() => history.push('/contacts/-1')}
-          >
-            <Plus className="h-6 w-6" />
-          </NPWDButton>
+          {!props.viewOnly && (
+            <NPWDButton
+              size="icon"
+              className="rounded-full p-2 text-neutral-900"
+              variant="ghost"
+              onClick={() => history.push('/contacts/-1')}
+            >
+              <Plus className="h-6 w-6" />
+            </NPWDButton>
+          )}
         </div>
       </div>
 
@@ -53,7 +65,7 @@ export const ContactList: React.FC = () => {
                 </div>
                 <List>
                   {groupedContacts[letter].contacts.map((contact: Contact) => (
-                    <ContactItem key={contact.id} {...contact} />
+                    <ContactItem key={contact.id} {...contact} viewOnly={props.viewOnly} />
                   ))}
                 </List>
               </div>
@@ -64,7 +76,7 @@ export const ContactList: React.FC = () => {
   );
 };
 
-const ContactItem = (contact: Contact) => {
+const ContactItem = (contact: ContactItemProps) => {
   const { initializeCall } = useCall();
   const { goToConversation } = useMessages();
   const { findExistingConversation } = useContactActions();
@@ -104,7 +116,7 @@ const ContactItem = (contact: Contact) => {
     <ListItem>
       <div className="min-w-0 flex-1">
         <Link
-          to={`/contacts/${contact.id}`}
+          to={`${contact.viewOnly ? '#' : `/contacts/${contact.id}`}`}
           className="flex items-center justify-between focus:outline-none"
         >
           <div className="flex items-center space-x-2">

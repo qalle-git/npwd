@@ -3,6 +3,9 @@ import { ThemeOptions } from '@mui/material';
 // Configure all of the phone's default themes here.
 export const PhoneThemes: Record<string, ThemeOptions> = {
   'taso-dark': {
+    typography: {
+      fontFamily: 'Oswald, sans-serif',
+    },
     components: {
       MuiDivider: {
         styleOverrides: {
@@ -14,14 +17,6 @@ export const PhoneThemes: Record<string, ThemeOptions> = {
     },
     palette: {
       mode: 'dark',
-      primary: {
-        main: '#a6d4fa',
-      },
-      text: {
-        primary: 'rgba(255, 255, 255, 0.9)',
-        secondary: 'rgba(200, 200, 200, 0.9)',
-        disabled: 'rgba(200, 200, 200, 0.5)',
-      },
     },
   },
   'default-light': {

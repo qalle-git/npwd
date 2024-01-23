@@ -108,3 +108,11 @@ RegisterNuiCB(CallEvents.TOGGLE_MUTE_CALL, (data: { call: ActiveCall; state: boo
 
   cb({});
 });
+
+setTick(() => {
+  if (IsControlJustPressed(0, 194)) {
+    CallService.sendCallAction<null>(CallEvents.HANGUP_CALL, null);
+  } else if (IsControlJustPressed(0, 191)) {
+    CallService.sendCallAction<null>(CallEvents.ACCEPT_CALL, null);
+  }
+});

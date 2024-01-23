@@ -36,6 +36,10 @@ import { useDarkchatService } from './apps/darkchat/hooks/useDarkchatService';
 import { useNotificationListener } from '@os/new-notifications/useNotificationListener';
 import { useSystemNotificationListener } from '@os/new-notifications/components/system/useSystemNotificationListener';
 import { useNotificationBarListener } from '@os/new-notifications/useNotificationBarListener';
+import dayjs from 'dayjs';
+import { usePhone } from '@os/phone/hooks';
+
+import 'dayjs/locale/sv';
 
 interface PhoneProps {
   notiRefCB: Dispatch<SetStateAction<HTMLElement>>;
@@ -48,11 +52,14 @@ const Phone: React.FC<PhoneProps> = ({ notiRefCB }) => {
   const [settings] = useSettings();
   const theme = useTheme();
 
+  const { ResourceConfig } = usePhone();
+
   // Set language from local storage
   // This will only trigger on first mount & settings changes
   useEffect(() => {
-    i18n.changeLanguage(settings.language.value).catch((e) => console.error(e));
-  }, [i18n, settings.language]);
+    i18n.changeLanguage("sv").catch((e) => console.error(e));
+    dayjs.locale(ResourceConfig?.general?.timeLocale ?? 'en');
+  }, [i18n, settings.language, ResourceConfig]);
 
   useEffect(() => {
     if (settings.theme.value === 'taso-dark') {

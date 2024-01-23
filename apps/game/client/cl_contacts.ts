@@ -6,3 +6,5 @@ RegisterNuiProxy(ContactEvents.GET_CONTACTS);
 RegisterNuiProxy(ContactEvents.ADD_CONTACT);
 RegisterNuiProxy(ContactEvents.DELETE_CONTACT);
 RegisterNuiProxy(ContactEvents.UPDATE_CONTACT);
+
+RegisterNuiProxy('npwd:getServices');

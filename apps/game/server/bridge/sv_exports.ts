@@ -43,10 +43,13 @@ if (config.general.useResourceIntegration) {
 }
 
 exp('getPhoneNumber', (src: number): string => {
-  playerLogger.error(
-    '[DEPRECATION WARNING]: deprecated export getPhoneNumber called, please use getPlayerData',
-  );
-  return PlayerService.getPlayer(src).getPhoneNumber();
+  const player = PlayerService.getPlayer(src);
+
+  if (!player) {
+    return 'Okänt';
+  }
+
+  return player.getPhoneNumber();
 });
 
 interface PlayerDataExportArgs {
@@ -93,7 +96,6 @@ exp('isPlayerBusy', (src: number): boolean => {
   return PlayerService.isBusy(src);
 });
 
-
-exp("isPhoneNumberBusy", (phoneNumber: string) => {
+exp('isPhoneNumberBusy', (phoneNumber: string) => {
   return callsService.isPhoneNumberInCall(phoneNumber);
-})
+});

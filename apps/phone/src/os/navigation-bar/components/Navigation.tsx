@@ -18,16 +18,16 @@ export const Navigation: React.FC = () => {
   };
 
   return (
-    <div className="bg-neutral-100 dark:bg-neutral-900 w-full h-14 px-12">
-      <div className="flex justify-between items-center h-full">
-        <button onClick={handleGoToMenu}>
-          <LayoutGrid className="text-neutral-400 hover:dark:text-neutral-100 h-6 w-6 hover:text-neutral-900 " />
+    <div className="h-14 w-full bg-neutral-100 px-12 dark:bg-neutral-900">
+      <div className="flex h-full items-center justify-between">
+        <button className="bg-transparent" onClick={handleGoToMenu}>
+          <LayoutGrid className="h-6 w-6 text-neutral-400 hover:text-neutral-900 hover:dark:text-neutral-100" />
         </button>
-        <button onClick={closePhone}>
-          <Circle className="text-neutral-400 hover:dark:text-neutral-100 h-6 w-6 hover:text-neutral-900 " />
+        <button className="bg-transparent" onClick={closePhone}>
+          <Circle className="h-6 w-6 text-neutral-400 hover:text-neutral-900 hover:dark:text-neutral-100" />
         </button>
-        <button onClick={handleGoBackInHistory}>
-          <ChevronLeft className="text-neutral-400 hover:dark:text-neutral-100 hover:text-neutral-900 h-6 w-6" />
+        <button className="bg-transparent" onClick={handleGoBackInHistory}>
+          <ChevronLeft className="h-6 w-6 text-neutral-400 hover:text-neutral-900 hover:dark:text-neutral-100" />
         </button>
       </div>
     </div>

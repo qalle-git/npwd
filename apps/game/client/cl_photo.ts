@@ -5,6 +5,48 @@ import { PhoneEvents } from '@typings/phone';
 import { ClUtils } from './client';
 import { animationService } from './animations/animation.controller';
 import { RegisterNuiCB, RegisterNuiProxy } from './cl_utils';
+import { ServerPromiseResp } from '@typings/common';
+import { config } from './cl_config';
+
+let SCREENSHOT_BASIC_TOKEN: string;
+setImmediate(() => {
+  ClUtils.emitNetPromise<ServerPromiseResp<string>>(PhotoEvents.GET_AUTHORISATION_TOKEN).then(
+    ({ data }) => {
+      SCREENSHOT_BASIC_TOKEN = data;
+    },
+  );
+});
+
+const takePhoto = () =>
+  new Promise((res, rej) => {
+    // Return and log error if screenshot basic token not found
+    if (SCREENSHOT_BASIC_TOKEN === 'none' && config.images.useAuthorization) {
+      return console.error('Screenshot basic token not found. Please set in server.cfg');
+    }
+    global.exports['screenshot-basic'].requestScreenshotUpload(
+      config.images.url,
+      config.images.type,
+      {
+        encoding: config.images.imageEncoding,
+        headers: {
+          [config.images.useAuthorization &&
+          config.images
+            .authorizationHeader]: `${config.images.authorizationPrefix} ${SCREENSHOT_BASIC_TOKEN}`,
+          [config.images.useContentType && 'Content-Type']: config.images.contentType,
+        },
+      },
+      async (data: any) => {
+        try {
+          let parsedData = JSON.parse(data);
+          for (const index of config.images.returnedDataIndexes) parsedData = parsedData[index];
+          const resp = await ClUtils.emitNetPromise(PhotoEvents.UPLOAD_PHOTO, parsedData);
+          res(resp);
+        } catch (e) {
+          rej(e.message);
+        }
+      },
+    );
+  });
 
 let inCameraMode = false;
 let canToggleHUD = false;
@@ -105,7 +147,8 @@ const handleTakePicture = async () => {
    * people with fast internet but a lot of people still have slow internet
    */
 
-  const resp = await ClUtils.emitNetPromise(PhotoEvents.UPLOAD_PHOTO);
+  const resp = await takePhoto();
+
   DestroyMobilePhone();
   CellCamActivate(false, false);
   openPhoneTemp();

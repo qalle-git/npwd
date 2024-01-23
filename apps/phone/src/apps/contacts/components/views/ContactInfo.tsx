@@ -175,7 +175,7 @@ const ContactsInfoPage: React.FC = () => {
       />
       <button
         onClick={() => history.goBack()}
-        className="ml-4 mt-4 rounded-md px-3 py-1 hover:dark:bg-neutral-800"
+        className="ml-4 mt-4 rounded-md bg-transparent px-3 py-1 hover:dark:bg-neutral-800"
       >
         <ArrowLeft className="h-6 w-6 dark:text-neutral-300" />
       </button>

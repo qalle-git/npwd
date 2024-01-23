@@ -68,7 +68,7 @@ export class CallService {
     // we don't want to reset our UI if we're in a call already or if we're currently starting a call that hasn't been canceled
     if (this.isInCall() || !this.isCurrentPendingCall(receiver)) return;
     if (this.callSound) this.callSound.stop();
-    if (Ringtone.isPlaying()) this.ringtone.stop();
+    if (this.ringtone) this.ringtone.stop();
     this.currentPendingCall = null;
     this.openCallModal(false);
     CallService.sendCallAction(CallEvents.SET_CALL_INFO, null);
@@ -121,7 +121,7 @@ export class CallService {
   handleCallAccepted(callData: ActiveCall) {
     this.currentCall = callData.channelId;
     if (this.callSound) this.callSound.stop();
-    if (Ringtone.isPlaying()) this.ringtone.stop();
+    if (this.ringtone) this.ringtone.stop();
     exp['pma-voice'].setCallChannel(callData.channelId);
     CallService.sendCallAction<ActiveCall>(CallEvents.SET_CALL_INFO, callData);
   }

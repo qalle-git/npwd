@@ -1,5 +1,5 @@
 import React from 'react';
-import Modal from '@ui/components/Modal';
+import Modal, { Modal2 } from '@ui/components/Modal';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -34,10 +34,12 @@ const GroupDetailsModal: React.FC<GroupDetailsModalProps> = ({
   };
 
   return (
-    <Modal visible={open} handleClose={onClose}>
+    <Modal2 visible={open} handleClose={onClose}>
       <Box>
         <Stack direction="row" spacing={4}>
-          <Typography fontSize={20}>Details</Typography>
+          <Typography color={'white'} fontSize={20}>
+            Details
+          </Typography>
           {/*<Button size="small">Add participant</Button>*/}
         </Stack>
       </Box>
@@ -48,8 +50,10 @@ const GroupDetailsModal: React.FC<GroupDetailsModalProps> = ({
           <Box mt={2} key={participant}>
             <Box display="flex" alignItems="center" justifyContent="space-between">
               <Stack direction="row" spacing={2}>
-                <PersonIcon fontSize="medium" />
-                <Typography fontSize={18}>{contact?.display ?? participant}</Typography>
+                <PersonIcon htmlColor="white" fontSize="medium" />
+                <Typography color={'white'} fontSize={18}>
+                  {contact?.display ?? participant}
+                </Typography>
               </Stack>
               {!contact && (
                 <Button onClick={() => handleAddContact(participant)}>
@@ -60,7 +64,7 @@ const GroupDetailsModal: React.FC<GroupDetailsModalProps> = ({
           </Box>
         );
       })}
-    </Modal>
+    </Modal2>
   );
 };
 

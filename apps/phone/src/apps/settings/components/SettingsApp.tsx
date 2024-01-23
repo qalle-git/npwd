@@ -245,14 +245,14 @@ export const SettingsApp: React.FC = () => {
             />
           </SettingsCategory>
           <SettingsCategory title={t('SETTINGS.CATEGORY.APPEARANCE')}>
-            <SettingItem
+            {/* <SettingItem
               label={t('SETTINGS.OPTIONS.LANGUAGE')}
               value={settings.language.label}
               options={languages}
               onClick={openMenu}
               Icon={BookA}
               theme={theme}
-            />
+            /> */}
             <SettingItem
               label={t('SETTINGS.OPTIONS.THEME')}
               value={settings.theme.label}

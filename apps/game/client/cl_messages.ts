@@ -6,6 +6,7 @@ import {
 } from '@typings/messages';
 import { sendMessageEvent } from '../utils/messages';
 import { RegisterNuiProxy, RegisterNuiCB } from './cl_utils';
+import { checkHasPhone } from './cl_main';
 
 RegisterNuiProxy(MessageEvents.FETCH_MESSAGE_CONVERSATIONS);
 RegisterNuiProxy(MessageEvents.DELETE_MESSAGE);
@@ -24,7 +25,9 @@ onNet(MessageEvents.SEND_MESSAGE_SUCCESS, (messageDto: PreDBMessage) => {
   sendMessageEvent(MessageEvents.SEND_MESSAGE_SUCCESS, messageDto);
 });
 
-onNet(MessageEvents.CREATE_MESSAGE_BROADCAST, (result: CreateMessageBroadcast) => {
+onNet(MessageEvents.CREATE_MESSAGE_BROADCAST, async (result: CreateMessageBroadcast) => {
+  if (!(await checkHasPhone())) return;
+
   sendMessageEvent(MessageEvents.CREATE_MESSAGE_BROADCAST, result);
 });
 

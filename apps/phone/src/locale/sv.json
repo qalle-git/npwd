@@ -48,6 +48,10 @@
           "TITLE": "Streamerläge",
           "DESCRIPTION": "Göm bilder innan de visas"
         },
+        "ANONYMOUS_MODE": {
+          "TITLE": "Anonymt läge",
+          "DESCRIPTION": "Göm ditt telefonnummer från andra användare"
+        },
         "CUSTOM_WALLPAPER": {
           "DIALOG_TITLE": "Anpassad bakgrundsbild",
           "DIALOG_CONTENT": "Ställ in en anpassad bakgrund genom att ange webbadressen till bilden nedan!",
@@ -134,7 +138,7 @@
       "EDIT_PROFILE_AVATAR": "Profilbildslänk",
       "AVATAR_CHOOSE_IMAGE": "Välj en bild",
       "EDIT_PROFILE_NAME": "Profilnamn",
-      "RETWEETED": "Retweetad",
+      "RETWEETED": "retweetade",
       "TWEET_MESSAGE_CHAR_LIMIT": "Meddelandet överskrider teckengränsen",
       "TWEET_MESSAGE_NEW_LINE_LIMIT": "Meddelandet är över den nya radgränsen",
       "TWEET_MESSAGE_PLACEHOLDER": "Vad gör du just nu?",
@@ -285,6 +289,7 @@
       "yy": "%d år"
     },
     "GENERIC": {
+      "ADD": "Skapa",
       "LOADING": "Laddar...",
       "WAIT": "Vänta...",
       "SAVE": "Spara",

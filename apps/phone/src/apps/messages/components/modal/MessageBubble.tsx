@@ -163,7 +163,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
                   ) : (
                     <p
                       className={cn(
-                        'text-sm text-neutral-900',
+                        'text-md text-neutral-900',
                         isMine ? 'text-white' : 'dark:text-white',
                       )}
                     >
@@ -176,7 +176,10 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
           </div>
           <div>
             {showVertIcon && (
-              <button onClick={openMenu} className="text-neutral-400 dark:text-white">
+              <button
+                onClick={openMenu}
+                className="bg-transparent text-neutral-400 dark:text-white"
+              >
                 <MoreVertical size={18} />
               </button>
             )}

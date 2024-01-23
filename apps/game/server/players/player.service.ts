@@ -41,7 +41,11 @@ class _PlayerService {
    * @param source - The player's source
    */
   deletePlayerFromMaps(source: number) {
-    const identifier = this.playersBySource.get(source).getIdentifier();
+    const player = this.playersBySource.get(source);
+
+    if (!player) return;
+
+    const identifier = player.getIdentifier();
     this.playersByIdentifier.delete(identifier);
     this.playersBySource.delete(source);
   }
@@ -247,11 +251,15 @@ class _PlayerService {
    * @param src - Source of player being unloaded
    **/
   async handleUnloadPlayerEvent(src: number) {
-    await this.clearPlayerData(src);
+    try {
+      await this.clearPlayerData(src);
 
-    this.deletePlayerFromMaps(src);
-    emitNet(PhoneEvents.SET_PLAYER_LOADED, src, false);
-    playerLogger.info(`Unloaded NPWD Player, source: (${src})`);
+      this.deletePlayerFromMaps(src);
+      emitNet(PhoneEvents.SET_PLAYER_LOADED, src, false);
+      playerLogger.info(`Unloaded NPWD Player, source: (${src})`);
+    } catch (error) {
+      playerLogger.error(`Failed to unload player, error: ${error.message}`);
+    }
   }
 }
 

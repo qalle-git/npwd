@@ -158,17 +158,53 @@
     }
   ],
   "ringtones": [
+    { "label": "Many Men", "value": "50cent" },
+    { "label": "Rid mig som en Dalahäst", "value": "dalahast" },
+    { "label": "Deutschland", "value": "deutschland" },
+    { "label": "Fest hos mig", "value": "festhosmig" },
+    { "label": "Ghostbusters", "value": "ghostbusters" },
+    { "label": "Bad Boys", "value": "badboys" },
+    { "label": "Games people play", "value": "gamespeopleplay" },
+    { "label": "Ransom", "value": "ransom" },
+    { "label": "Break Free", "value": "breakfree" },
+    { "label": "KOMMER DU IHÅG?", "value": "kommerduihag" },
+    { "label": "Changes", "value": "changes" },
+    { "label": "Let her go", "value": "lethergo" },
+    { "label": "Crazy Frog", "value": "crazyfrog" },
+    { "label": "Chicken song", "value": "chicken" },
+    { "label": "Vatten & Eld", "value": "vattenocheld" },
+    { "label": "Still Loving You", "value": "stilllovingyou" },
+    { "label": "Tjenare mannen!", "value": "tjenaremannen" },
+    { "label": "Polizei", "value": "einszweipolizei" },
+    { "label": "Hampster Dance", "value": "hampsterdance" },
+    { "label": "Unsainted", "value": "unsainted" },
+    { "label": "Carina", "value": "carina" },
+    { "label": "Barry White", "value": "cantgetenough" },
+    { "label": "Lose my mind", "value": "losemymind" },
+    { "label": "Rocka På", "value": "markoolio_rocka_pa" },
+    { "label": "Outro song", "value": "outro" },
+    { "label": "Modern", "value": "modern" },
+    { "label": "Orinico flow", "value": "orinicoflow" },
+    { "label": "Perf", "value": "perf" },
+    { "label": "Polisen", "value": "polisen" },
+    { "label": "Rockstar", "value": "rockstar" },
+    { "label": "Rosa helikopter", "value": "rosa_helikopter" },
+    { "label": "Rasta got soul", "value": "rastagotsoul" },
+    { "label": "Sommar o Sol", "value": "sommarosol" },
+    { "label": "Shivers", "value": "shivers" },
+    { "label": "Som dom", "value": "som_dom" },
+    { "label": "Stop talkin", "value": "stop_talkin" },
+    { "label": "Turbo lover", "value": "turbolover" },
+    { "label": "Tystnar i luren", "value": "tystnariluren" },
+    { "label": "Song of the south", "value": "songofthesouth" },
+    { "label": "Vem ska jag tro på", "value": "vemskajagtropa" },
+    { "label": "Lejonkungen", "value": "lionking" },
+    { "label": "Waka waka", "value": "wakawaka" },
+    { "label": "Who let the dogs out?", "value": "wholetthedogsout" },
+    { "label": "K-Rounds", "value": "krounds" },
     {
-      "label": "iFruit",
-      "value": "PHONE_GENERIC_RING_01"
-    },
-    {
-      "label": "Desk Phone",
-      "value": "PHONE_GENERIC_RING_02"
-    },
-    {
-      "label": "Rotary Phone",
-      "value": "PHONE_GENERIC_RING_03"
+      "label": "Räddningspatrullen",
+      "value": "rescue_patrol"
     }
   ],
   "notiSounds": [
@@ -191,11 +227,11 @@
   ],
   "notiFilters": [
     {
-      "label": "All Tweets",
+      "label": "Alla tweets",
       "value": "all"
     },
     {
-      "label": "Only Mentions",
+      "label": "Bara omnämningar",
       "value": "mentions"
     }
   ],

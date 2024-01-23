@@ -45,8 +45,6 @@ const useExternalAppsAction = () => {
 
       await loadScript(url);
 
-      console.log('Loaded external app', appName);
-
       __federation_method_setRemote(scope, {
         url: () => Promise.resolve(url),
         format: 'esm',

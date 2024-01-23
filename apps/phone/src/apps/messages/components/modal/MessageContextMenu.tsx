@@ -93,7 +93,6 @@ const MessageContextMenu: React.FC<MessageCtxMenuProps> = ({
   return (
     <>
       <ContextMenu open={isOpen} onClose={onClose} options={menuOptions} />
-      {modalsVisible ? <Backdrop /> : undefined}
       <MessageImageModal
         image={image}
         imagePreview={imagePreview}

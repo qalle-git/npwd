@@ -64,7 +64,7 @@ const MessageInput = ({
       <div className="flex items-center space-x-2 rounded-md px-2 dark:bg-neutral-800">
         <button
           onClick={onAddImageClick}
-          className="h-14 dark:text-white hover:dark:text-green-500"
+          className="h-14 bg-transparent dark:text-white hover:dark:text-green-500"
         >
           <Image size={24} />
         </button>

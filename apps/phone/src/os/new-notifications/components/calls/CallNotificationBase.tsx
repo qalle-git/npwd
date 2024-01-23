@@ -38,7 +38,7 @@ export const CallNotificationBase = forwardRef<HTMLDivElement, CallNotificationB
     const call = useCurrentCallValue();
     const { minutes, seconds, startTimer, resetTimer } = useTimer();
 
-    const { getDisplayByNumber, getPictureByNumber } = useContactActions();
+    const { getPictureByNumber } = useContactActions();
 
     const { t } = useTranslation();
 
@@ -73,6 +73,10 @@ export const CallNotificationBase = forwardRef<HTMLDivElement, CallNotificationB
     }
 
     const getDisplayAvatar = () => {
+      if (call.isAnonymous) {
+        return 'A';
+      }
+
       return call.isTransmitter
         ? getPictureByNumber(call.receiver)
         : getPictureByNumber(call?.transmitter);

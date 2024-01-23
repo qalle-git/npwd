@@ -228,6 +228,7 @@ class CallsService {
       callLogger.error(
         `Call with transmitter number ${transmitterNumber} does not exist in current calls map!`,
       );
+
       return;
     }
 
@@ -259,7 +260,10 @@ class CallsService {
       callLogger.error(
         `Call with transmitter number ${transmitterNumber} does not exist in current calls map!`,
       );
-      return resp({ status: 'error', errorMsg: 'DOES_NOT_EXIST' });
+
+      emitNet(CallEvents.WAS_ENDED, reqObj.source, currentCall);
+
+      resp({ status: 'ok' });
     }
 
     // Just in case currentCall for some reason at this point is falsy

@@ -5,7 +5,7 @@ module.exports = {
   plugins: [],
   extend: {
     fontFamily: {
-      sans: ['var(--font-geist-sans)'],
+      sans: ['Oswald'],
     },
   },
 };

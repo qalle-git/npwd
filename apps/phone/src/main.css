@@ -5,22 +5,22 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Geist Variable', sans-serif;
-    font-size: 20px;
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 code {
-  font-family: 'Geist Variable', sans-serif;
+  font-family: 'Oswald', sans-serif;
 }
 
 a,
 a:visited,
 a:hover,
 a:active {
-    text-decoration: none;
+  text-decoration: none;
 }

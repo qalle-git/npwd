@@ -44,15 +44,16 @@ setTimeout(() => {
 }, 1000);
 
 const getCurrentGameTime = () => {
-  let hour: string | number = GetClockHours();
+  const [year, month, day, hour, minute, second] = GetPosixTime();
 
-  let minute: string | number = GetClockMinutes();
+  let hourUI = hour.toString();
+  let minuteUI = minute.toString();
 
   // Format time if need be
-  if (hour < 10) hour = `0${hour}`;
-  if (minute < 10) minute = `0${minute}`;
+  if (hour < 10) hourUI = `0${hour}`;
+  if (minute < 10) minuteUI = `0${minute}`;
 
-  return `${hour}:${minute}`;
+  return `${hourUI}:${minuteUI}`;
 };
 
 /* * * * * * * * * * * * *
@@ -72,6 +73,8 @@ export const showPhone = async (): Promise<void> => {
   SetNuiFocus(true, true);
   SetNuiFocusKeepInput(true);
   emit('npwd:disableControlActions', true);
+
+  SetCurrentPedWeapon(PlayerPedId(), GetHashKey('WEAPON_UNARMED'), true);
 };
 
 export const hidePhone = async (): Promise<void> => {
@@ -173,12 +176,11 @@ RegisterNuiCB<{ keepGameFocus: boolean }>(
   },
 );
 
-
 // If you want to remove controls from a external application this is the way to do it.
 // chip - commenting this out because it crashed the phone for some reason, even though it's not used anywhere??? like...we dont emit it
-/* on(PhoneEvents.SET_GAME_FOCUS, (keepGameFocus: boolean) => {
+on(PhoneEvents.SET_GAME_FOCUS, (keepGameFocus: boolean) => {
   if (global.isPhoneOpen) SetNuiFocusKeepInput(keepGameFocus);
-}); */
+});
 
 /* * * * * * * * * * * * *
  *

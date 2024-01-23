@@ -29,8 +29,8 @@ import { useRecoilValue } from 'recoil';
 import { useApp } from '@os/apps/hooks/useApps';
 import { UnreadNotificationBarProps } from '@typings/notifications';
 import { useNotification } from '../useNotification';
-import {BatteryFull, SignalMedium} from "lucide-react";
-import {cn} from "@utils/css";
+import { BatteryFull, SignalMedium } from 'lucide-react';
+import { cn } from '@utils/css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -137,7 +137,7 @@ export const NotificationBar = () => {
   return (
     <>
       <div
-        className={cn(classes.root, "flex items-center justify-between flex-nowrap")}
+        className={cn(classes.root, 'flex flex-nowrap items-center justify-between')}
         onClick={() => {
           setBarUncollapsed((curr) => !curr);
         }}
@@ -172,7 +172,7 @@ export const NotificationBar = () => {
             {unreadNotificationIds?.length !== 0 && (
               <Box pl={2}>
                 <Button color="primary" size="small" onClick={handleClearNotis}>
-                  Clear all notification
+                  Rensa alla notifikationer
                 </Button>
               </Box>
             )}

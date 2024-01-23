@@ -24,6 +24,7 @@ export enum PhoneEvents {
   SEND_PLAYER_SOURCE = 'npwd:sendPlayerSource',
   SEND_PLAYER_IDENTIFIER = 'npwd:sendPlayerIdentifier',
   GET_PHONE_NUMBER = 'npwd:getPhoneNumber',
+  SET_GAME_FOCUS = 'npwd:setGameFocus',
 }
 
 // Used to standardize the server response

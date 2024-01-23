@@ -71,22 +71,22 @@ export function ProfileForm({ profile, showPreview }: IProps) {
   const [job, setJob] = useState(profile?.job || '');
   const [location, setLocation] = useState(profile?.location || '');
   const [tags, setTags] = useState(profile?.tags || '');
-  const [voiceMessage, setVoiceMessage] = useState<Blob | null>(null);
+  // const [voiceMessage, setVoiceMessage] = useState<Blob | null>(null);
   const [recordVoiceMessage, setRecordVoiceMessage] = useState(false);
-  const { play, pause, playing, currentTime, duration } = useAudioPlayer(profile.voiceMessage);
+  // const { play, pause, playing, currentTime, duration } = useAudioPlayer(profile.voiceMessage);
 
   const closeVoiceMessageModal = () => {
     setRecordVoiceMessage((curVal) => !curVal);
   };
 
-  const handleSetVoiceMessage = (voiceMessage: Blob) => {
-    setVoiceMessage(voiceMessage);
-  };
+  // const handleSetVoiceMessage = (voiceMessage: Blob) => {
+  //   setVoiceMessage(voiceMessage);
+  // };
 
-  const calculateProgress =
-    isNaN(duration) || duration == Infinity
-      ? 0
-      : (Math.trunc(currentTime) / Math.trunc(duration)) * 100;
+  // const calculateProgress =
+  //   isNaN(duration) || duration == Infinity
+  //     ? 0
+  //     : (Math.trunc(currentTime) / Math.trunc(duration)) * 100;
 
   const handleOpenGallery = useCallback(() => {
     history.push(`/camera?${qs.stringify({ referal: encodeURIComponent(pathname + search) })}`);
@@ -103,31 +103,31 @@ export function ProfileForm({ profile, showPreview }: IProps) {
   };
 
   const handleUpdate = async () => {
-    let voiceMessageURL: string | null = null;
+    // let voiceMessageURL: string | null = null;
 
-    if (voiceMessage && voiceMessage.size) {
-      const b64 = await blobToBase64(voiceMessage);
+    // if (voiceMessage && voiceMessage.size) {
+    //   const b64 = await blobToBase64(voiceMessage);
 
-      await fetchNui<ServerPromiseResp<AudioResponse>, AudioRequest>(AudioEvents.UPLOAD_AUDIO, {
-        file: b64,
-        size: voiceMessage.size,
-      }).then((audioRes) => {
-        if (audioRes.status !== 'ok') {
-          return addAlert({
-            type: 'error',
-            message: audioRes.errorMsg,
-          });
-        }
-        voiceMessageURL = audioRes.data.url;
-      });
-    }
+    //   await fetchNui<ServerPromiseResp<AudioResponse>, AudioRequest>(AudioEvents.UPLOAD_AUDIO, {
+    //     file: b64,
+    //     size: voiceMessage.size,
+    //   }).then((audioRes) => {
+    //     if (audioRes.status !== 'ok') {
+    //       return addAlert({
+    //         type: 'error',
+    //         message: audioRes.errorMsg,
+    //       });
+    //     }
+    //     voiceMessageURL = audioRes.data.url;
+    //   });
+    // }
 
     const updatedProfile: IProfile = {
       ...update,
       name: update.name.trim(),
       image: update.image.trim(),
       tags: update.tagList.join(','),
-      voiceMessage: voiceMessageURL,
+      // voiceMessage: voiceMessageURL,
     };
 
     const event = profile ? MatchEvents.UPDATE_MY_PROFILE : MatchEvents.CREATE_MY_PROFILE;
@@ -168,11 +168,11 @@ export function ProfileForm({ profile, showPreview }: IProps) {
 
   return (
     <div className={classes.root}>
-      <RecordVoiceMessage
+      {/* <RecordVoiceMessage
         open={recordVoiceMessage}
         closeModal={closeVoiceMessageModal}
         setVoiceMessage={handleSetVoiceMessage}
-      />
+      /> */}
       {recordVoiceMessage && <Backdrop />}
       <Box>
         <ProfileField
@@ -213,7 +213,7 @@ export function ProfileForm({ profile, showPreview }: IProps) {
       />
       <ProfileField label={t('MATCH.EDIT_PROFILE_TAGS')} value={tags} handleChange={setTags} />
 
-      {ResourceConfig && ResourceConfig.voiceMessage && (
+      {/* {ResourceConfig && ResourceConfig.voiceMessage && (
         <>
           <Typography variant="body2" color="textSecondary" component="p" sx={{ marginTop: '8px' }}>
             {t('MATCH.EDIT_VOICE_MESSAGE')}
@@ -242,7 +242,7 @@ export function ProfileForm({ profile, showPreview }: IProps) {
             )}
           </Stack>
         </>
-      )}
+      )} */}
 
       <UpdateButton handleClick={handleUpdate} />
     </div>

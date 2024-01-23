@@ -3,11 +3,8 @@ import { BottomNavigation, BottomNavigationAction } from '@mui/material';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Theme } from '@mui/material/styles';
 import makeStyles from '@mui/styles/makeStyles';
-import PhoneIcon from '@mui/icons-material/Phone';
-import PersonIcon from '@mui/icons-material/Person';
-import HistoryIcon from '@mui/icons-material/History';
 import { useTranslation } from 'react-i18next';
-import { Contact, History, Phone } from 'lucide-react';
+import { Briefcase, Contact, History, Phone } from 'lucide-react';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -31,12 +28,7 @@ const DialerNavBar: React.FC = () => {
 
   return (
     <BottomNavigation value={page} onChange={handleChange} showLabels className={classes.root}>
-      <BottomNavigationAction
-        value="/phone"
-        component={NavLink}
-        icon={<History />}
-        to="/phone"
-      />
+      <BottomNavigationAction value="/phone" component={NavLink} icon={<History />} to="/phone" />
       <BottomNavigationAction
         value="/phone/dial"
         color="secondary"
@@ -50,6 +42,13 @@ const DialerNavBar: React.FC = () => {
         component={NavLink}
         icon={<Contact />}
         to="/phone/contacts"
+      />
+      <BottomNavigationAction
+        value="/phone/services"
+        color="secondary"
+        component={NavLink}
+        icon={<Briefcase />}
+        to="/phone/services"
       />
     </BottomNavigation>
   );

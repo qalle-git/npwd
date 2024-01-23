@@ -44,10 +44,13 @@ RegisterNuiCB(SettingEvents.PREVIEW_ALERT, () => {
 
 // Play ringtone for 3 seconds when previewing ringtone
 RegisterNuiCB(SettingEvents.PREVIEW_RINGTONE, () => {
-  if (Ringtone.isPlaying()) return;
-
   const ringtoneSound = KvpService.getKvpString(KvpItems.NPWD_RINGTONE);
+
   const ringtone = new Ringtone(ringtoneSound);
-  ringtone.play();
-  setTimeout(ringtone.stop, 3000);
+
+  ringtone.play(0.05);
+
+  setTimeout(() => {
+    ringtone.stop();
+  }, 3000);
 });

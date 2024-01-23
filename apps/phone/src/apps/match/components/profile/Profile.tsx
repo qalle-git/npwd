@@ -42,12 +42,12 @@ const DEFAULT_IMAGE = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_im
 const Profile = ({ profile }: IProps) => {
   const c = useStyles();
   const [t] = useTranslation();
-  const { play, pause, playing, currentTime, duration } = useAudioPlayer(profile.voiceMessage);
+  // const { play, pause, playing, currentTime, duration } = useAudioPlayer(profile.voiceMessage);
 
-  const calculateProgress =
-    isNaN(duration) || duration == Infinity
-      ? 0
-      : (Math.trunc(currentTime) / Math.trunc(duration)) * 100;
+  // const calculateProgress =
+  //   isNaN(duration) || duration == Infinity
+  //     ? 0
+  //     : (Math.trunc(currentTime) / Math.trunc(duration)) * 100;
 
   function parseSecondaryBio(): string | undefined {
     const { location, job } = profile;
@@ -86,7 +86,7 @@ const Profile = ({ profile }: IProps) => {
           {profile.bio}
         </Typography>
 
-        {profile.voiceMessage && (
+        {/* {profile.voiceMessage && (
           <Box>
             <Box display="flex" alignItems="center">
               <IconButton onClick={playing ? pause : play}>
@@ -105,7 +105,7 @@ const Profile = ({ profile }: IProps) => {
               </Box>
             </Box>
           </Box>
-        )}
+        )} */}
       </CardContent>
     </>
   );

@@ -40,11 +40,14 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
           <p className="text-base font-medium text-neutral-900 dark:text-neutral-50">
             {settingLabel}
           </p>
-          <button onClick={onClose} className="text-neutral-900 dark:text-neutral-50">
+          <button
+            onClick={onClose}
+            className="bg-transparent text-neutral-900 dark:text-neutral-50"
+          >
             <X size={24} />
           </button>
         </div>
-        <div className="overflow-auto max-h-[500px] pb-4">
+        <div className="max-h-[500px] overflow-auto pb-4">
           <List>
             {_options.map((option) => (
               <ListItem

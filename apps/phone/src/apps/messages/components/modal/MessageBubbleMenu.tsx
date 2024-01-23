@@ -48,7 +48,7 @@ const MessageBubbleMenu: React.FC<MessageBubbleMenuProps> = ({
   const imageOptions = useMemo(
     () => [
       {
-        label: 'Save image',
+        label: 'Spara foto',
         icon: <PhotoLibraryIcon />,
         onClick: handleSaveImage,
       },

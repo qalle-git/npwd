@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Slide,
-  Paper,
-  Typography,
-  Button,
-  Box,
-  CircularProgress,
-  Tooltip,
-} from '@mui/material';
+import { Slide, Paper, Typography, Button, Box, CircularProgress, Tooltip } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import GroupIcon from '@mui/icons-material/Group';
 import useMessages from '../../hooks/useMessages';
@@ -167,7 +159,6 @@ export const MessageModal = () => {
   return (
     <Slide direction="left" in={!!activeMessageConversation}>
       <div className="space-between flex h-full w-full flex-col">
-        {isGroupModalOpen && <Backdrop />}
         <Box
           display="flex"
           paddingX={1}
@@ -178,7 +169,7 @@ export const MessageModal = () => {
         >
           <button
             onClick={closeModal}
-            className="mb-1 rounded-full p-2 hover:bg-neutral-100 hover:dark:bg-neutral-800"
+            className="mb-1 rounded-full bg-transparent p-2 hover:bg-neutral-100 hover:dark:bg-neutral-800"
           >
             <ArrowLeft size={26} />
           </button>
@@ -193,7 +184,7 @@ export const MessageModal = () => {
             >
               <button
                 onClick={() => initializeCall(targetNumber)}
-                className="rounded-full p-3 hover:bg-neutral-100 hover:dark:bg-neutral-800"
+                className="rounded-full bg-transparent p-3 hover:bg-neutral-100 hover:dark:bg-neutral-800"
               >
                 <Phone size={18} />
               </button>
