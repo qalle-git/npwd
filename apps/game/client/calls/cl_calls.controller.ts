@@ -30,9 +30,17 @@ export const initializeCallHandler = async (data: InitializeCallDTO, cb?: NuiCal
     if (serverRes.status !== 'ok') {
       return cb?.(serverRes);
     }
-    const { transmitter, isTransmitter, receiver, isUnavailable, isAnonymous } = serverRes.data;
+    const { transmitter, isTransmitter, receiver, isUnavailable, isAnonymous, label } =
+      serverRes.data;
     // Start the process of giving NUI feedback by opening NUI modal
-    callService.handleStartCall(transmitter, receiver, isTransmitter, isUnavailable, isAnonymous);
+    callService.handleStartCall(
+      transmitter,
+      receiver,
+      isTransmitter,
+      isUnavailable,
+      isAnonymous,
+      label,
+    );
     cb?.(serverRes);
   } catch (e) {
     console.error(e);
@@ -45,8 +53,15 @@ RegisterNuiCB<InitializeCallDTO>(CallEvents.INITIALIZE_CALL, initializeCallHandl
 
 onNetTyped<StartCallEventData>(CallEvents.START_CALL, async (data: ActiveCall) => {
   // TODO: add isAnonymous to the call for the client that is being called
-  const { transmitter, isTransmitter, receiver, isUnavailable, isAnonymous } = data;
-  callService.handleStartCall(transmitter, receiver, isTransmitter, isUnavailable, isAnonymous);
+  const { transmitter, isTransmitter, receiver, isUnavailable, isAnonymous, label } = data;
+  callService.handleStartCall(
+    transmitter,
+    receiver,
+    isTransmitter,
+    isUnavailable,
+    isAnonymous,
+    label,
+  );
 });
 
 RegisterNuiCB<TransmitterNumDTO>(CallEvents.ACCEPT_CALL, (data, cb) => {

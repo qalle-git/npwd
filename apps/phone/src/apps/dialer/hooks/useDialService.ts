@@ -24,7 +24,10 @@ export const useDialService = () => {
 
         if (state !== 'hasValue') return;
 
-        setHistory((curHistory) => [callObj, ...curHistory]);
+        setHistory((curHistory) => [
+          { ...callObj, transmitter: callObj.label ?? callObj.transmitter },
+          ...curHistory,
+        ]);
       },
     [],
   );

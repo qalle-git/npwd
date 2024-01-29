@@ -10,12 +10,29 @@ const CallContactContainer = () => {
 
   const { getDisplayByNumber, getPictureByNumber } = useContactActions();
 
-  const getDisplayOrNumber = () =>
-    call.isTransmitter
+  const getDisplayOrNumber = () => {
+    if (call.label) {
+      return call.label;
+    }
+
+    return call.isTransmitter
       ? getDisplayByNumber(call?.receiver)
       : !call.isTransmitter && call.isAnonymous
       ? 'Anonymous'
       : getDisplayByNumber(call?.transmitter);
+  };
+
+  const getDisplayAvatar = () => {
+    if (call.label) {
+      return call.label;
+    }
+
+    return call.isTransmitter
+      ? getPictureByNumber(call.receiver)
+      : !call.isTransmitter && call.isAnonymous
+      ? 'https://i.fivemanage.com/images/3ClWwmpwkFhL.png'
+      : getPictureByNumber(call?.transmitter);
+  };
 
   return (
     <Box display="flex" alignItems="center">
@@ -30,13 +47,7 @@ const CallContactContainer = () => {
       <Avatar
         sx={{ ml: 1, height: 80, width: 80 }}
         alt={getDisplayOrNumber()}
-        src={
-          call.isTransmitter
-            ? getPictureByNumber(call.receiver)
-            : !call.isTransmitter && call.isAnonymous
-            ? 'https://i.fivemanage.com/images/3ClWwmpwkFhL.png'
-            : getPictureByNumber(call?.transmitter)
-        }
+        src={getDisplayAvatar()}
       />
     </Box>
   );

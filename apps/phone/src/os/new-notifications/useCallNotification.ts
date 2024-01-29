@@ -29,12 +29,12 @@ export const useCallNotification = () => {
           horizontal: 'center',
         },
         persist: true,
-        title: 'Call',
+        title: 'Samtal',
         onExited: () => {
           setCurrenCall(null);
         },
-        transmitter: dto.isAnonymous ? 'Anonymous' : contactDisplay(dto.transmitter),
-        receiver: contactDisplay(dto.receiver),
+        transmitter: dto.isAnonymous ? 'Anonym' : dto.label ?? contactDisplay(dto.transmitter),
+        receiver: dto.label ?? contactDisplay(dto.receiver),
         key: 'npwd:callNotification',
       });
     }

@@ -6,6 +6,7 @@ import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSnackbar } from '@os/snackbar/hooks/useSnackbar';
 import { useNuiEvent } from '@common/hooks/useNuiEvent';
+import dayjs from 'dayjs';
 
 export const usePhoneService = () => {
   const { getApp } = useApps();
@@ -38,7 +39,9 @@ export const usePhoneService = () => {
   useNuiEvent('PHONE', PhoneEvents.ADD_SNACKBAR_ALERT, addAlert);
   useNuiEvent('PHONE', PhoneEvents.SET_VISIBILITY, setVisibility);
   useNuiEvent('PHONE', PhoneEvents.SET_CONFIG, setResourceConfig);
-  useNuiEvent('PHONE', PhoneEvents.SET_TIME, setPhoneTime);
+  useNuiEvent('PHONE', PhoneEvents.SET_TIME, () => {
+    setPhoneTime(`${dayjs(Date.now()).format('HH:mm')}`);
+  });
   useNuiEvent<string>('PHONE', PhoneEvents.OPEN_APP, handleOpenApp);
   useNuiEvent('PHONE', PhoneEvents.IS_PHONE_DISABLED, setIsPhoneDisabled);
   useNuiEvent('PHONE', PhoneEvents.SEND_PLAYER_SOURCE, setPlayerSource);

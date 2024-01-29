@@ -22,8 +22,11 @@ const genNumber = (length: number): string => {
 };
 
 const generateUsNumber = (): string => {
-  const rawNumber = genNumber(10);
-  return rawNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+  const randomAreaCode = ['070', '072', '073', '076'][Math.floor(Math.random() * 4)];
+
+  const rawNumber = `${randomAreaCode}${genNumber(7)}}`;
+
+  return rawNumber;
 };
 
 /**/
