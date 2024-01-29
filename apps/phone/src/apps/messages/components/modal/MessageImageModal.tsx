@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
-import Modal, { Modal2 } from '../../../../ui/components/Modal';
-import { Box, Typography, Button } from '@mui/material';
+import { useCallback, useEffect } from 'react';
+import { Modal2 } from '../../../../ui/components/Modal';
 import { useHistory, useLocation } from 'react-router-dom';
 import { deleteQueryFromLocation } from '@common/utils/deleteQueryFromLocation';
 import { PictureResponsive } from '@ui/components/PictureResponsive';
@@ -8,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useMessageAPI } from '../../hooks/useMessageAPI';
 import { MessageConversation } from '@typings/messages';
 import useMessages from '../../hooks/useMessages';
-import Close from '@mui/icons-material/Close';
+import { NPWDButton } from '@npwd/keyos';
 
 interface IProps {
   messageGroup: MessageConversation | undefined;
@@ -64,18 +63,17 @@ export const MessageImageModal = ({
   return (
     <>
       <Modal2 visible={imagePreview} handleClose={removeQueryParamImage}>
-        <Typography color={'white'} paragraph>
-          {t('MESSAGES.SHARE_IMAGE_TITLE')}
-        </Typography>
-        <PictureResponsive src={imagePreview} alt="Share gallery image preview" />
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          onClick={() => sendFromQueryParam(imagePreview)}
-        >
-          {t('GENERIC.SHARE')}
-        </Button>
+        <div className="space-y-4 p-1">
+          <p className="text-sm font-medium">{t('MESSAGES.SHARE_IMAGE_TITLE')}</p>
+          <PictureResponsive src={imagePreview} alt="Share gallery image preview" />
+          <NPWDButton
+            onClick={() => sendFromQueryParam(imagePreview)}
+            className="w-full bg-green-600"
+            size="sm"
+          >
+            {t('GENERIC.SHARE')}
+          </NPWDButton>
+        </div>
       </Modal2>
     </>
   );

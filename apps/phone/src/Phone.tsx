@@ -47,7 +47,6 @@ interface PhoneProps {
 
 const Phone: React.FC<PhoneProps> = ({ notiRefCB }) => {
   const { i18n } = useTranslation();
-
   const { apps } = useApps();
   const [settings] = useSettings();
   const theme = useTheme();

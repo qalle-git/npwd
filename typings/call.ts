@@ -88,7 +88,7 @@ export enum CallEvents {
   HANGUP_CALL = 'npwd:hangupCall',
 }
 
-interface IncomingCallerCtx {
+export interface IncomingCallerCtx {
   source: number;
   number: string;
   name: string;
@@ -96,8 +96,16 @@ interface IncomingCallerCtx {
 
 export interface OnCallExportCtx {
   incomingCaller: IncomingCallerCtx;
+  receiverNumber: string
   exit: () => void;
   next: () => void;
   reply: (msg: string) => void;
   forward: (tgt: string) => void;
+}
+
+export type CallMiddlewareInvokable = (ctx: OnCallExportCtx) => void;
+
+export enum OnCallStatus {
+  NEXT,
+  FORWARD
 }

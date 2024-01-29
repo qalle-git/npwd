@@ -16,7 +16,7 @@
     "rollup": "^2.77.2",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-esbuild": "^4.10.2",
-    "turbo": "^1.8.3",
+    "turbo": "^1.11.3",
     "lodash": "https://github.com/lodash/lodash.git#npm"
   },
   "scripts": {
@@ -35,7 +35,9 @@
     "database": "pnpm --filter @npwd/database",
     "logger": "pnpm --filter @npwd/logger",
     "npwd-config": "pnpm --filter @npwd/config",
-    "ui": "pnpm --filter @npwd/keyos"
+    "ui": "pnpm --filter @npwd/keyos",
+    "query": "pnpm --filter @core/query",
+    "router": "pnpm --filter @core/router"
   },
   "husky": {
     "hooks": {
