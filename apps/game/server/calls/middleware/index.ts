@@ -3,8 +3,9 @@ import {
   CallMiddlewareInvokable,
   IncomingCallerCtx,
   InitializeCallDTO,
-  OnCallExportCtx, OnCallStatus
-} from "@typings/call";
+  OnCallExportCtx,
+  OnCallStatus,
+} from '@typings/call';
 import OncallService from './oncall.service';
 import MessagesService from '../../messages/messages.service';
 import CallService from '../calls.service';
@@ -32,10 +33,12 @@ export const OnCallMap = new Map<string, (ctx: OnCallExportCtx) => void>();
     }
  */
 exp('onCall', (tgtNumber: string, cb: CallMiddlewareInvokable) => {
-  const resourceName = GetInvokingResource()
-  const handler = new CallMiddleware(cb, resourceName, tgtNumber.toString())
-  callLogger.debug(`Resource [${resourceName}] registered an onCall handler for number [${tgtNumber}]`)
-  OncallService.addHandler(handler)
+  const resourceName = GetInvokingResource();
+  const handler = new CallMiddleware(cb, resourceName, tgtNumber.toString());
+  callLogger.debug(
+    `Resource [${resourceName}] registered an onCall handler for number [${tgtNumber}]`,
+  );
+  OncallService.addHandler(handler);
 });
 
 export class CallMiddleware {
@@ -69,9 +72,9 @@ export class CallMiddleware {
             message,
           });
         },
-        forward: (receiverNumber: string, isAnonymous = false) => {
+        forward: (receiverNumber: string, label: string, isAnonymous = false) => {
           CallService.handleInitializeCall(
-            { ...reqObj, data: { receiverNumber, isAnonymous } },
+            { ...reqObj, data: { receiverNumber, label, isAnonymous } },
             resp,
           )
             .catch((e) => {
@@ -79,7 +82,7 @@ export class CallMiddleware {
               callLogger.error(`Error occured handling init call: ${e.message}`);
             })
             .then(() => {
-              resolve(OnCallStatus.FORWARD)
+              resolve(OnCallStatus.FORWARD);
               return;
             })
             .catch(reject);
@@ -89,6 +92,6 @@ export class CallMiddleware {
   }
 }
 
-on("onResourceStop", (resource: string) => {
-  OncallService.resetResource(resource)
-})
+on('onResourceStop', (resource: string) => {
+  OncallService.resetResource(resource);
+});

@@ -7,8 +7,8 @@ export const NoNotificationText: React.FC = () => {
 
   return (
     <Box width="100%" py={1} textAlign="center">
-      <Typography variant="body2" color="textSecondary">
-        🎉 {t('NOTIFICATIONS.NO_UNREAD')} 🎉
+      <Typography variant="body2" color="black">
+        {t('NOTIFICATIONS.NO_UNREAD')}
       </Typography>
     </Box>
   );

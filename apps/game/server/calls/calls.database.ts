@@ -16,6 +16,8 @@ export class _CallsRepo {
   }
 
   async updateCall(call: CallHistoryItem, isAccepted: boolean, end: number): Promise<void> {
+    if (!call || !call.identifier) return;
+
     const query = 'UPDATE npwd_calls SET is_accepted=?, end=? WHERE identifier = ?';
     await DbInterface._rawExec(query, [isAccepted, end, call.identifier]);
   }

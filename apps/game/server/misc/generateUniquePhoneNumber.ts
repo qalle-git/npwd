@@ -25,7 +25,7 @@ const genNumber = (length: number): string => {
 const generateUsNumber = (): string => {
   const randomAreaCode = ['070', '072', '073', '076'][Math.floor(Math.random() * 4)];
 
-  const rawNumber = `${randomAreaCode}${genNumber(7)}}`;
+  const rawNumber = `${randomAreaCode}${genNumber(7)}`;
 
   return rawNumber;
 };

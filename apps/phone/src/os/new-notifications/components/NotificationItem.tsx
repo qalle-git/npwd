@@ -32,8 +32,8 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({ id, key }) =
       sx={{ pr: '28px', position: 'relative' }}
       key={key}
     >
-      {icon && <ListItemAvatar>{icon}</ListItemAvatar>}
-      <ListItemText secondary={content} />
+      {icon && <ListItemAvatar className="text-black">{icon}</ListItemAvatar>}
+      <span className=" text-sm text-black">{content}</span>
     </ListItem>
   );
 };

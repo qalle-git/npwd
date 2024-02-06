@@ -8,6 +8,9 @@ import { onNetPromise } from '../lib/PromiseNetEvents/onNetPromise';
 onNet(PhoneEvents.FETCH_CREDENTIALS, () => {
   const src = getSource();
   const player = PlayerService.getPlayer(src);
+
+  if (!player) return;
+
   const phoneNumber = player.getPhoneNumber();
   const playerIdentifier = player.getIdentifier();
 
@@ -17,7 +20,11 @@ onNet(PhoneEvents.FETCH_CREDENTIALS, () => {
 onNetPromise<void, string>(PhoneEvents.GET_PHONE_NUMBER, async (reqObj, resp) => {
   const src = reqObj.source;
 
-  const phoneNumber = PlayerService.getPlayer(src).getPhoneNumber();
+  const player = PlayerService.getPlayer(src);
+
+  if (!player) return;
+
+  const phoneNumber = player.getPhoneNumber();
 
   resp({ status: 'ok', data: phoneNumber });
 });

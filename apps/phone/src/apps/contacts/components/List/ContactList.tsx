@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { SearchContacts } from './SearchContacts';
 import { Link, useHistory } from 'react-router-dom';
 import { useFilteredContacts } from '../../hooks/state';
@@ -24,17 +24,28 @@ export interface ContactItemProps extends Contact {
 }
 
 export const ContactList: React.FC<ContactProps> = (props) => {
-  const filteredContacts = props.contacts ?? useFilteredContacts();
+  const filteredContacts = useFilteredContacts();
   const history = useHistory();
 
-  // FIXME: This should be reduced before being passed to the component
-  const groupedContacts = filteredContacts.reduce((r, e) => {
-    const group = e.display.charAt(0).toUpperCase();
-    if (!r[group]) r[group] = { group, contacts: [e] };
-    else r[group].contacts.push(e);
-
-    return r;
-  }, []);
+  const groupedContacts = useCallback(() => {
+    if (props.contacts) {
+      return props.contacts.reduce((r, e) => {
+        const group = e.display && e.display.charAt(0).toUpperCase();
+        if (!r[group]) r[group] = { group, contacts: [e] };
+        else r[group].contacts.push(e);
+    
+        return r;
+      }, []);
+    } else {
+      return filteredContacts.reduce((r, e) => {
+        const group = e.display && e.display.charAt(0).toUpperCase();
+        if (!r[group]) r[group] = { group, contacts: [e] };
+        else r[group].contacts.push(e);
+    
+        return r;
+      }, []);
+    }
+  }, [filteredContacts, props.contacts])
 
   return (
     <div className="relative">
@@ -56,7 +67,7 @@ export const ContactList: React.FC<ContactProps> = (props) => {
 
       <div className="mt-4 overflow-y-auto px-4">
         <nav className="space-y-2 overflow-y-auto" aria-label="Directory">
-          {Object.keys(groupedContacts)
+          {Object.keys(groupedContacts())
             .sort()
             .map((letter) => (
               <div key={letter} className="relative">
@@ -64,7 +75,7 @@ export const ContactList: React.FC<ContactProps> = (props) => {
                   <h3>{letter}</h3>
                 </div>
                 <List>
-                  {groupedContacts[letter].contacts.map((contact: Contact) => (
+                  {groupedContacts()[letter].contacts.map((contact: Contact) => (
                     <ContactItem key={contact.id} {...contact} viewOnly={props.viewOnly} />
                   ))}
                 </List>
@@ -111,6 +122,10 @@ const ContactItem = (contact: ContactItemProps) => {
 
     history.push(`/messages/new?phoneNumber=${phoneNumber}`);
   };
+  
+  if (!contact) {
+    return null;
+  }
 
   return (
     <ListItem>
@@ -135,7 +150,7 @@ const ContactItem = (contact: ContactItemProps) => {
             )}
             <div>
               <p className="text-base font-medium text-neutral-900 dark:text-neutral-100">
-                {contact.display}
+                {contact?.display}
               </p>
               <p className="text-sm text-neutral-400">{contact.number}</p>
             </div>

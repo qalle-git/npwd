@@ -34,7 +34,6 @@ import { cn } from '@utils/css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.default,
     height: '30px',
     width: '100%',
     color: theme.palette.text.primary,
@@ -59,10 +58,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
   },
   drawer: {
-    backgroundColor: theme.palette.background.default,
+    paddingTop: '30px',
     width: '100%',
     position: 'absolute',
-    top: '30px',
     zIndex: 98,
   },
   closeNotifBtn: {
@@ -150,13 +148,13 @@ export const NotificationBar = () => {
                 return <IconUnreadGrid tgtNoti={notification} key={idx} />;
               })}
         </Grid>
-        {time && (
+        {/* {time && (
           <Grid item className={classes.item}>
             <Typography className={classes.text} variant="button">
               {time}
             </Typography>
           </Grid>
-        )}
+        )} */}
         <div className="flex items-center justify-end">
           <div>
             <SignalMedium />
@@ -167,12 +165,12 @@ export const NotificationBar = () => {
         </div>
       </div>
       <Slide direction="down" in={barCollapsed} mountOnEnter unmountOnExit>
-        <Paper square className={classes.drawer}>
+        <Paper square className={cn(classes.drawer, 'rounded-2xl bg-gray-200/30 backdrop-blur')}>
           <Box py={1}>
             {unreadNotificationIds?.length !== 0 && (
               <Box pl={2}>
-                <Button color="primary" size="small" onClick={handleClearNotis}>
-                  Rensa alla notifikationer
+                <Button color="success" size="small" onClick={handleClearNotis}>
+                  Rensa
                 </Button>
               </Box>
             )}

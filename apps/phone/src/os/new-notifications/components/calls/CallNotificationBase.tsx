@@ -34,9 +34,9 @@ export const CallNotificationBase = forwardRef<HTMLDivElement, CallNotificationB
     const RECEIVER_TEXT = useMemo(
       () =>
         call?.is_accepted
-          ? receiver
+          ? (call.label ?? receiver)
           : `${t('DIALER.MESSAGES.CALLING', {
-              transmitter: receiver,
+              transmitter: (call.label ?? receiver),
             })}`,
       [call.is_accepted, receiver],
     );
@@ -62,6 +62,8 @@ export const CallNotificationBase = forwardRef<HTMLDivElement, CallNotificationB
     }
 
     const getDisplayAvatar = () => {
+      if (call.label) return call.label;
+
       return call.isTransmitter
         ? getPictureByNumber(call.receiver)
         : getPictureByNumber(call?.transmitter);

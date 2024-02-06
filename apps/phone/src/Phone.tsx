@@ -40,6 +40,7 @@ import dayjs from 'dayjs';
 import { usePhone } from '@os/phone/hooks';
 
 import 'dayjs/locale/sv';
+import { NotificationEvents, SystemNotificationDTO } from '@typings/notifications';
 
 interface PhoneProps {
   notiRefCB: Dispatch<SetStateAction<HTMLElement>>;
@@ -56,7 +57,7 @@ const Phone: React.FC<PhoneProps> = ({ notiRefCB }) => {
   // Set language from local storage
   // This will only trigger on first mount & settings changes
   useEffect(() => {
-    i18n.changeLanguage("sv").catch((e) => console.error(e));
+    i18n.changeLanguage('sv').catch((e) => console.error(e));
     dayjs.locale(ResourceConfig?.general?.timeLocale ?? 'en');
   }, [i18n, settings.language, ResourceConfig]);
 
@@ -130,6 +131,23 @@ InjectDebugData<any>([
     app: 'PHONE',
     method: PhoneEvents.SET_VISIBILITY,
     data: true,
+  },
+]);
+
+InjectDebugData<SystemNotificationDTO>([
+  {
+    app: 'SYSTEM',
+    method: NotificationEvents.CREATE_SYSTEM_NOTIFICATION,
+    data: {
+      content: 'This is a test notification',
+      controls: true,
+      duration: 5000,
+      keepOpen: true,
+      onCancel: () => console.log('Cancelled'),
+      onConfirm: () => console.log('Confirmed'),
+      uniqId: 'test',
+      secondaryTitle: 'Test Notification',
+    },
   },
 ]);
 

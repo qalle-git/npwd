@@ -1,30 +1,30 @@
-import { ActiveCall, CallEvents, InitializeCallDTO, OnCallStatus } from "@typings/call";
-import { CallMiddleware } from "./index";
-import { PromiseEventResp, PromiseRequest } from "../../lib/PromiseNetEvents/promise.types";
-import PlayerService from "../../players/player.service";
-import { uuidv4 } from "../../../utils/fivem";
-import { callLogger } from "../calls.utils";
+import { ActiveCall, CallEvents, InitializeCallDTO, OnCallStatus } from '@typings/call';
+import { CallMiddleware } from './index';
+import { PromiseEventResp, PromiseRequest } from '../../lib/PromiseNetEvents/promise.types';
+import PlayerService from '../../players/player.service';
+import { uuidv4 } from '../../../utils/fivem';
+import { callLogger } from '../calls.utils';
 
 class OnCallService {
-  private callHandlers: Map<string, CallMiddleware[]>
-  private resourcesTracked: Set<string>
+  private callHandlers: Map<string, CallMiddleware[]>;
+  private resourcesTracked: Set<string>;
 
   constructor() {
-    this.callHandlers = new Map()
-    this.resourcesTracked = new Set()
+    this.callHandlers = new Map();
+    this.resourcesTracked = new Set();
   }
 
   addHandler(handler: CallMiddleware) {
-    this.resourcesTracked.add(handler.hostResource)
+    this.resourcesTracked.add(handler.hostResource);
 
-    if (this.callHandlers.has(handler.target)){
-      const handlerList = this.callHandlers.get(handler.target)
-      handlerList.push(handler)
+    if (this.callHandlers.has(handler.target)) {
+      const handlerList = this.callHandlers.get(handler.target);
+      handlerList.push(handler);
 
-      return
+      return;
     }
 
-    this.callHandlers.set(handler.target, [handler])
+    this.callHandlers.set(handler.target, [handler]);
   }
 
   // Keep a set containing all the resources we are tracking so that we are not doing an O(n^2) compute unnecessarily
@@ -32,18 +32,15 @@ class OnCallService {
     if (!this.resourcesTracked.has(resource)) return;
 
     this.callHandlers.forEach((value, key, map) => {
-      const newList = value.filter(c => c.hostResource !== resource)
-      map.set(key, newList)
-    })
+      const newList = value.filter((c) => c.hostResource !== resource);
+      map.set(key, newList);
+    });
   }
 
-  async handle(
-         reqObj: PromiseRequest<InitializeCallDTO>,
-         resp: PromiseEventResp<ActiveCall>
-  ) {
-    callLogger.debug("invoking onCall for number", reqObj.data.receiverNumber)
+  async handle(reqObj: PromiseRequest<InitializeCallDTO>, resp: PromiseEventResp<ActiveCall>) {
+    callLogger.debug('invoking onCall for number', reqObj.data.receiverNumber);
     if (!this.callHandlers.has(reqObj.data.receiverNumber)) {
-      return
+      return;
     }
 
     const caller = PlayerService.getPlayer(reqObj.source);
@@ -54,11 +51,11 @@ class OnCallService {
       number: caller.getPhoneNumber(),
     };
 
-    const handlerList = this.callHandlers.get(reqObj.data.receiverNumber)
-    console.log(handlerList.length)
+    const handlerList = this.callHandlers.get(reqObj.data.receiverNumber);
+    console.log(handlerList.length);
     for (const handler of handlerList) {
       try {
-        const status = await handler.invoke(incomingCaller, reqObj, resp)
+        const status = await handler.invoke(incomingCaller, reqObj, resp);
         if (status === OnCallStatus.FORWARD) {
           break;
         }
@@ -71,6 +68,7 @@ class OnCallService {
           is_accepted: false,
           isUnavailable: true,
           start: Math.floor(new Date().getTime() / 1000).toString(),
+          label: reqObj.data.label,
         };
 
         resp({
@@ -86,4 +84,4 @@ class OnCallService {
   }
 }
 
-export default new OnCallService()
+export default new OnCallService();

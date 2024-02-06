@@ -190,7 +190,7 @@ const ContactsInfoPage: React.FC = () => {
           ) : (
             <div className="rounded-full-600 mx-auto h-24 w-24 text-center">
               <span className="text-5xl text-gray-600 dark:text-gray-300">
-                {initials(contact.display)}
+                {contact ? initials(contact.display) : "X"}
               </span>
             </div>
           )}

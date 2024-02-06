@@ -8,26 +8,31 @@ import { useExternalApps } from '@common/hooks/useExternalApps';
 export const HomeApp: React.FC = () => {
   const { apps } = useApps();
   const externalApps = useExternalApps();
-  return (
-    <AppWrapper>
-      <Box component="div" mt={6} px={1}>
-        {apps && <GridMenu xs={3} items={[...apps, ...externalApps]} />}
-      </Box>
 
-      {/*<div className="absolute bottom-5 left-8 right-8">
-        <div className="h-20 w-full rounded-md bg-gray-200/30 backdrop-blur">
-          {apps &&
-            apps.slice(0, 4).map((app) => (
-              <div className="float-left h-full w-1/4" key={app.id}>
-                <div className="flex h-full w-full items-center justify-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-md bg-gray-200/50 backdrop-blur">
-                    {app.icon}
-                  </div>
-                </div>
-              </div>
-            ))}
+  const currentDate = new Date().toLocaleDateString();
+
+  const currentTime = new Date();
+  const currentHour = currentTime.getHours().toString().padStart(2, '0');
+  const currentMinute = currentTime.getMinutes().toString().padStart(2, '0');
+
+  return (
+    <>
+      <AppWrapper>
+        <div className=" mb-2 pt-16 text-center text-7xl text-black ">
+          {currentHour}:{currentMinute}
         </div>
-      </div>*/}
-    </AppWrapper>
+        <div className="text-center text-sm text-black">{currentDate}</div>
+
+        <Box component="div" mt={6} px={1}>
+          {apps && <GridMenu xs={3} items={[...apps.slice(4), ...externalApps]} />}
+        </Box>
+
+        <div className="absolute bottom-5 left-8 right-8">
+          <div className="h-20 w-full rounded-2xl bg-gray-200/30 backdrop-blur">
+            {apps && <GridMenu xs={3} items={[...apps.slice(0, 4)]} />}
+          </div>
+        </div>
+      </AppWrapper>
+    </>
   );
 };

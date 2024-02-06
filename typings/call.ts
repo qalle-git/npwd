@@ -96,16 +96,16 @@ export interface IncomingCallerCtx {
 
 export interface OnCallExportCtx {
   incomingCaller: IncomingCallerCtx;
-  receiverNumber: string
+  receiverNumber: string;
   exit: () => void;
   next: () => void;
   reply: (msg: string) => void;
-  forward: (tgt: string) => void;
+  forward: (tgt: string, label: string) => void;
 }
 
 export type CallMiddlewareInvokable = (ctx: OnCallExportCtx) => void;
 
 export enum OnCallStatus {
   NEXT,
-  FORWARD
+  FORWARD,
 }
