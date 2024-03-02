@@ -8,6 +8,12 @@ import Loader from '../Loader';
 import PageText from '../PageText';
 import ActiveProfile from '../ActiveProfile';
 import { useMatchActions } from '../../hooks/useMatchActions';
+import { MockProfilesData } from '@apps/match/utils/constants';
+import LogDebugEvent from '@os/debug/LogDebugEvents';
+import { ServerPromiseResp } from '@typings/common';
+import { FormattedProfile, MatchEvents } from '@typings/match';
+import fetchNui from '@utils/fetchNui';
+import { isEnvBrowser } from '@utils/misc';
 
 const useStyles = makeStyles({
   root: {
@@ -34,6 +40,12 @@ const MatchPage = () => {
     }, MINIMUM_LOAD_TIME);
   }, []);
 
+  useEffect(() => {
+    fetchNui<ServerPromiseResp<void>>(
+      "phone:openMatchApp"
+    );
+  }, [])
+
   const handleSwipe = (id: number, liked: boolean) => {
     // the user didn't choose (didn't swipe far enough)
     if (liked === null) return;
@@ -43,6 +55,8 @@ const MatchPage = () => {
   if (error) return <PageText text={t('MATCH.FEEDBACK.PROFILES_ERROR')} />;
   if (!loaded || !profiles) return <Loader />;
   if (!activeProfile) return <PageText text={t('MATCH.FEEDBACK.NO_PROFILES')} />;
+
+
 
   return (
     <Paper className={classes.root} square>

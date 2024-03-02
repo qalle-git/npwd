@@ -29,36 +29,51 @@ export const GridMenu: React.FC<GridMenuProps> = ({ items, Component = AppIcon, 
         items.map((item) => (
           <Fragment key={item.id}>
             {!item.isDisabled && (
-              <Tooltip
-                title={t(item.nameLocale)}
-                PopperProps={{
-                  popperOptions: {
-                    modifiers: [
-                      {
-                        name: 'offset',
-                        options: {
-                          offset: [0, -8],
-                        },
+              // <Tooltip
+              //   title={t(item.nameLocale)}
+              //   PopperProps={{
+              //     popperOptions: {
+              //       modifiers: [
+              //         {
+              //           name: 'offset',
+              //           options: {
+              //             offset: [0, -8],
+              //           },
+              //         },
+              //       ],
+              //     },
+              //   }}
+              // >
+              //   <Link to={item.path} className="float-left w-1/4 p-2" key={item.id}>
+              //     <div className="flex w-full items-center justify-center">
+              //       <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-200/50 backdrop-blur transition-all hover:bg-gray-100/50">
+              //         {item.icon}
+              //       </div>
+              //     </div>
+              //   </Link>
+              // </Tooltip>
+
+              <Tooltip title={t(item.nameLocale)} PopperProps={{
+                popperOptions: {
+                  modifiers: [
+                    {
+                      name: 'offset',
+                      options: {
+                        offset: [0, -8],
                       },
-                    ],
-                  },
-                }}
-              >
-                <Link to={item.path} className="float-left w-1/4 p-2" key={item.id}>
-                  <div className="flex w-full items-center justify-center">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-200/50 backdrop-blur transition-all hover:bg-gray-100/50">
-                      {item.icon}
-                    </div>
-                  </div>
-                </Link>
+                    },
+                  ],
+                },
+              }}>
+
+                <Grid item xs={xs} key={item.id}>
+                  <Box textAlign="center">
+                    <Link to={item.path}>
+                      <Component {...item} />
+                    </Link>
+                  </Box>
+                </Grid>
               </Tooltip>
-              // <Grid item xs={xs} key={item.id}>
-              //   <Box textAlign="center">
-              //     <Link to={item.path}>
-              //       <Component {...item} />
-              //     </Link>
-              //   </Box>
-              // </Grid>
             )}
           </Fragment>
         ))}

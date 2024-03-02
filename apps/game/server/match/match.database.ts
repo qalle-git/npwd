@@ -1,11 +1,12 @@
-import { Like, Match, NewProfile, Profile } from '@typings/match';
-import { DbInterface, pool } from '@npwd/database';
-import { ResultSetHeader } from 'mysql2';
-import { config } from '@npwd/config/server';
-import { matchLogger } from './match.utils';
-import { generateProfileName } from '../utils/generateProfileName';
+import { Like, Match, NewProfile, Profile } from "@typings/match";
+import { DbInterface, pool } from "@npwd/database";
+import { ResultSetHeader } from "mysql2";
+import { config } from "@npwd/config/server";
+import { matchLogger } from "./match.utils";
+import { generateProfileName } from "../utils/generateProfileName";
 
-const DEFAULT_IMAGE = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg';
+const DEFAULT_IMAGE =
+  "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg";
 const MATCHES_PER_PAGE = 20;
 
 export class _MatchDB {
@@ -33,10 +34,14 @@ export class _MatchDB {
         WHERE npwd_match_profiles.identifier != ?
           AND (MaxDates.lastSeen IS NULL OR MaxDates.lastSeen < NOW() - INTERVAL 7 DAY)
           AND MaxDates.liked IS NULL
+          AND npwd_match_profiles.updatedAt > NOW() - INTERVAL 1 HOUR
         ORDER BY npwd_match_profiles.updatedAt DESC
         LIMIT 25
 		`;
-    const [results] = await DbInterface._rawExec(query, [identifier, identifier]);
+    const [results] = await DbInterface._rawExec(query, [
+      identifier,
+      identifier,
+    ]);
     return <Profile[]>results;
   }
 
@@ -50,7 +55,11 @@ export class _MatchDB {
     const query = `INSERT INTO npwd_match_views (identifier, profile, liked)
                    VALUES (?, ?, ?)`;
 
-    const results = await DbInterface._rawExec(query, [identifier, like.id, like.liked]);
+    const results = await DbInterface._rawExec(query, [
+      identifier,
+      like.id,
+      like.liked,
+    ]);
     return <ResultSetHeader[]>results;
   }
 
@@ -137,14 +146,25 @@ export class _MatchDB {
    * @param profile - profile we are going to create
    * @returns Profile - the created profile
    */
-  async createProfile(identifier: string, profile: NewProfile): Promise<Profile> {
-    const { name, image, bio, location, job, tags, voiceMessage } = profile;
+  async createProfile(
+    identifier: string,
+    profile: NewProfile
+  ): Promise<Profile> {
+    const { name, image, bio, location, job, tags } = profile;
     const query = `
-        INSERT INTO npwd_match_profiles (identifier, name, image, bio, location, job, tags, voiceMessage)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO npwd_match_profiles (identifier, name, image, bio, location, job, tags)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
 		`;
 
-    await pool.execute(query, [identifier, name, image, bio, location, job, tags, voiceMessage]);
+    await pool.execute(query, [
+      identifier,
+      name,
+      image,
+      bio,
+      location,
+      job,
+      tags,
+    ]);
     return await this.getPlayerProfile(identifier);
   }
 
@@ -166,7 +186,16 @@ export class _MatchDB {
             voiceMessage = ?
         WHERE identifier = ?
 		`;
-    await pool.execute(query, [image, name, bio, location, job, tags, voiceMessage, identifier]);
+    await pool.execute(query, [
+      image,
+      name,
+      bio,
+      location,
+      job,
+      tags,
+      voiceMessage,
+      identifier,
+    ]);
     return await this.getPlayerProfile(identifier);
   }
 
@@ -181,7 +210,7 @@ export class _MatchDB {
     // case where the server owner wants players to select their own names
     if (!config.match.generateProfileNameFromUsers) return null;
 
-    const defaultProfileName = await generateProfileName(identifier, ' ');
+    const defaultProfileName = await generateProfileName(identifier, " ");
     // case where we tried to generate a profile name but failed due to
     // some database misconfiguration or error
     if (!defaultProfileName) return null;
@@ -189,14 +218,16 @@ export class _MatchDB {
     const defaultProfile: NewProfile = {
       name: defaultProfileName,
       image: DEFAULT_IMAGE,
-      bio: '',
-      location: '',
-      job: '',
-      tags: '',
+      bio: "",
+      location: "",
+      job: "",
+      tags: "",
       voiceMessage: null,
     };
 
-    matchLogger.info(`Creating default match profile ${defaultProfileName} for ${identifier}`);
+    matchLogger.info(
+      `Creating default match profile ${defaultProfileName} for ${identifier}`
+    );
     return await this.createProfile(identifier, defaultProfile);
   }
 
@@ -207,7 +238,10 @@ export class _MatchDB {
    * @param likes - list of new Likes
    * @returns Profile - list of profiles we matched with
    */
-  async checkIfMatched(identifier: string, like: Like): Promise<Profile | null> {
+  async checkIfMatched(
+    identifier: string,
+    like: Like
+  ): Promise<Profile | null> {
     const matchedProfiles = await this.checkForMatchById(identifier, like.id);
 
     return matchedProfiles[0];

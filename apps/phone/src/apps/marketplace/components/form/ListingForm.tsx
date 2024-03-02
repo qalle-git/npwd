@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Box, Button, Typography, useTheme } from '@mui/material';
+import { Box, Button, Divider, Typography, useTheme } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import {
   MarketplaceResp,
@@ -136,16 +136,18 @@ export const ListingForm: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      <h1>{
-        <Typography style={{ color: phoneTheme.palette.text.primary }}>{t('MARKETPLACE.NEW_LISTING')}</Typography>}
-      </h1>
+      <Divider />
+      <br />
+      <Typography variant='h5' style={{ color: phoneTheme.palette.text.primary }}>Skapa ny annonsering</Typography>
+      <br />
+
       <TextField
         className={classes.input}
         value={formState.title}
         error={formState.title.length >= MarketplaceDatabaseLimits.title}
         onChange={handleTitleChange}
-        label={t('GENERIC.REQUIRED')}
-        placeholder={t('MARKETPLACE.FORM_TITLE')}
+        label={t('MARKETPLACE.FORM_TITLE')}
+        placeholder={"Cykel"}
         inputProps={{
           className: classes.textFieldInput,
           maxLength: 25,
@@ -159,7 +161,7 @@ export const ListingForm: React.FC = () => {
 
       <Box display="flex" alignItems="center" paddingLeft={5}>
         <div>
-          <ImageIcon />
+          <ImageIcon htmlColor='white' />
         </div>
         <div>
           <Button onClick={handleChooseImage}>{t('MARKETPLACE.CHOOSE_IMAGE')}</Button>
@@ -167,7 +169,7 @@ export const ListingForm: React.FC = () => {
       </Box>
       <TextField
         className={classes.input}
-        placeholder={t('MARKETPLACE.FORM_IMAGE')}
+        placeholder={"Bildlänk"}
         value={formState.url}
         error={formState.url.length >= MarketplaceDatabaseLimits.url}
         onChange={handleUrlChange}
@@ -180,10 +182,10 @@ export const ListingForm: React.FC = () => {
       <TextField
         className={classes.input}
         onChange={handleDescriptionChange}
-        label={t('GENERIC.REQUIRED')}
+        label={t('MARKETPLACE.FORM_DESCRIPTION')}
         value={formState.description}
         error={formState.description.length >= MarketplaceDatabaseLimits.description}
-        placeholder={t('MARKETPLACE.FORM_DESCRIPTION')}
+        placeholder={"250 kr"}
         inputProps={{
           className: classes.multilineFieldInput,
           maxLength: 130,

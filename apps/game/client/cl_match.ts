@@ -1,8 +1,13 @@
-import { CreateMatchBroadcast, FormattedProfile, MatchEvents } from '@typings/match';
-import { sendMatchEvent } from '../utils/messages';
-import { RegisterNuiProxy } from './cl_utils';
+import {
+  CreateMatchBroadcast,
+  FormattedProfile,
+  MatchEvents,
+} from "@typings/match";
+import { sendMatchEvent } from "../utils/messages";
+import { RegisterNuiProxy } from "./cl_utils";
 
 RegisterNuiProxy(MatchEvents.GET_PROFILES);
+RegisterNuiProxy("phone:openMatchApp");
 RegisterNuiProxy(MatchEvents.GET_MY_PROFILE);
 RegisterNuiProxy(MatchEvents.GET_MATCHES);
 RegisterNuiProxy(MatchEvents.SAVE_LIKES);
@@ -13,6 +18,9 @@ onNet(MatchEvents.SAVE_LIKES_BROADCAST, (result: CreateMatchBroadcast) => {
   sendMatchEvent(MatchEvents.SAVE_LIKES_BROADCAST, result);
 });
 
-onNet(MatchEvents.CREATE_MATCH_ACCOUNT_BROADCAST, (result: FormattedProfile) => {
-  sendMatchEvent(MatchEvents.CREATE_MATCH_ACCOUNT_BROADCAST, result);
-});
+onNet(
+  MatchEvents.CREATE_MATCH_ACCOUNT_BROADCAST,
+  (result: FormattedProfile) => {
+    sendMatchEvent(MatchEvents.CREATE_MATCH_ACCOUNT_BROADCAST, result);
+  }
+);

@@ -1,5 +1,5 @@
-import { formatMatches, formatProfile, matchLogger } from './match.utils';
-import { MatchDB, _MatchDB } from './match.database';
+import { formatMatches, formatProfile, matchLogger } from "./match.utils";
+import { MatchDB, _MatchDB } from "./match.database";
 import {
   FormattedMatch,
   FormattedProfile,
@@ -7,49 +7,69 @@ import {
   MatchEvents,
   MatchResp,
   Profile,
-} from '@typings/match';
-import PlayerService from '../players/player.service';
-import { PromiseEventResp, PromiseRequest } from '../lib/PromiseNetEvents/promise.types';
-import { checkAndFilterImage } from './../utils/imageFiltering';
+} from "@typings/match";
+import PlayerService from "../players/player.service";
+import {
+  PromiseEventResp,
+  PromiseRequest,
+} from "../lib/PromiseNetEvents/promise.types";
+import { checkAndFilterImage } from "./../utils/imageFiltering";
 
 class _MatchService {
   private readonly matchDB: _MatchDB;
 
   constructor() {
     this.matchDB = MatchDB;
-    matchLogger.debug('Match service started');
+    matchLogger.debug("Match service started");
   }
 
   async handleGetProfiles(
     reqObj: PromiseRequest<void>,
-    resp: PromiseEventResp<FormattedProfile[]>,
+    resp: PromiseEventResp<FormattedProfile[]>
   ): Promise<void> {
     const identifier = PlayerService.getIdentifier(reqObj.source);
+
     try {
       const profiles = await this.dispatchProfiles(identifier);
-      resp({ status: 'ok', data: profiles });
+      resp({ status: "ok", data: profiles });
     } catch (e) {
       matchLogger.error(`Error in handleGetProfiles, ${e.message}`);
-      resp({ status: 'error', errorMsg: 'GENERIC_DB_ERROR' });
+      resp({ status: "error", errorMsg: "GENERIC_DB_ERROR" });
     }
+  }
+
+  async handleOpenApp(
+    reqObj: PromiseRequest<void>,
+    resp: PromiseEventResp<void>
+  ): Promise<void> {
+    const identifier = PlayerService.getIdentifier(reqObj.source);
+
+    await this.matchDB.updateLastActive(identifier);
+
+    resp({
+      status: "ok",
+    });
   }
 
   async handleGetMyProfile(
     reqObj: PromiseRequest<void>,
-    resp: PromiseEventResp<FormattedProfile>,
+    resp: PromiseEventResp<FormattedProfile>
   ): Promise<void> {
     const identifier = PlayerService.getIdentifier(reqObj.source);
     try {
       const profile = await this.dispatchPlayerProfile(identifier);
       emitNet(MatchEvents.CREATE_MATCH_ACCOUNT_BROADCAST, -1, profile);
-      resp({ status: 'ok', data: profile });
+      resp({ status: "ok", data: profile });
     } catch (e) {
       matchLogger.error(`Error in handleGetMyProfile, ${e.message}`);
-      resp({ status: 'error', errorMsg: 'GENERIC_DB_ERROR' });
+      resp({ status: "error", errorMsg: "GENERIC_DB_ERROR" });
     }
   }
 
-  async handleSaveLikes(reqObj: PromiseRequest<Like>, resp: PromiseEventResp<boolean>) {
+  async handleSaveLikes(
+    reqObj: PromiseRequest<Like>,
+    resp: PromiseEventResp<boolean>
+  ) {
     const player = PlayerService.getPlayer(reqObj.source);
     const identifier = player.getIdentifier();
     matchLogger.debug(`Saving likes for identifier ${identifier}`);
@@ -58,16 +78,21 @@ class _MatchService {
       await this.matchDB.saveLikes(identifier, reqObj.data);
     } catch (e) {
       matchLogger.error(`Failed to save likes, ${e.message}`);
-      resp({ status: 'error', errorMsg: 'GENERIC_DB_ERROR' });
+      resp({ status: "error", errorMsg: "GENERIC_DB_ERROR" });
     }
 
     try {
-      const newMatches = await this.matchDB.checkIfMatched(identifier, reqObj.data);
+      const newMatches = await this.matchDB.checkIfMatched(
+        identifier,
+        reqObj.data
+      );
 
       if (newMatches) {
-        resp({ status: 'ok', data: true });
+        resp({ status: "ok", data: true });
 
-        const matchedPlayer = PlayerService.getPlayerFromIdentifier(newMatches.identifier);
+        const matchedPlayer = PlayerService.getPlayerFromIdentifier(
+          newMatches.identifier
+        );
 
         if (matchedPlayer) {
           emitNet(MatchEvents.SAVE_LIKES_BROADCAST, matchedPlayer.source, {
@@ -75,32 +100,35 @@ class _MatchService {
           });
         }
       } else {
-        resp({ status: 'ok', data: false });
+        resp({ status: "ok", data: false });
       }
     } catch (e) {
       matchLogger.error(`Failed to find new matches, ${e.message}`);
-      resp({ status: 'error', errorMsg: 'GENERIC_DB_ERROR' });
+      resp({ status: "error", errorMsg: "GENERIC_DB_ERROR" });
     }
   }
 
   async handleGetMatches(
     reqObj: PromiseRequest<{ page: number }>,
-    resp: PromiseEventResp<FormattedMatch[]>,
+    resp: PromiseEventResp<FormattedMatch[]>
   ) {
     const identifier = PlayerService.getIdentifier(reqObj.source);
     try {
-      const matchedProfiles = await this.matchDB.findAllMatches(identifier, reqObj.data.page);
+      const matchedProfiles = await this.matchDB.findAllMatches(
+        identifier,
+        reqObj.data.page
+      );
       const formattedMatches = matchedProfiles.map(formatMatches);
-      resp({ status: 'ok', data: formattedMatches });
+      resp({ status: "ok", data: formattedMatches });
     } catch (e) {
       matchLogger.error(`Failed to retrieve matches, ${e.message}`);
-      resp({ status: 'error', errorMsg: 'GENERIC_DB_ERROR' });
+      resp({ status: "error", errorMsg: "GENERIC_DB_ERROR" });
     }
   }
 
   async handleCreateMyProfile(
     reqObj: PromiseRequest<Profile>,
-    resp: PromiseEventResp<FormattedProfile>,
+    resp: PromiseEventResp<FormattedProfile>
   ) {
     const identifier = PlayerService.getIdentifier(reqObj.source);
     const profile = reqObj.data;
@@ -110,22 +138,24 @@ class _MatchService {
 
     try {
       if (!profile.name || !profile.name.trim()) {
-        throw new Error('Profile name must not be blank');
+        throw new Error("Profile name must not be blank");
       }
 
       const newProfile = await this.matchDB.createProfile(identifier, profile);
       const formattedProfile = formatProfile(newProfile);
 
-      resp({ status: 'ok', data: formattedProfile });
+      resp({ status: "ok", data: formattedProfile });
     } catch (e) {
-      matchLogger.error(`Failed to update profile for identifier ${identifier}, ${e.message}`);
-      resp({ status: 'error', errorMsg: 'GENERIC_DB_ERROR' });
+      matchLogger.error(
+        `Failed to update profile for identifier ${identifier}, ${e.message}`
+      );
+      resp({ status: "error", errorMsg: "GENERIC_DB_ERROR" });
     }
   }
 
   async handleUpdateMyProfile(
     reqObj: PromiseRequest<Profile>,
-    resp: PromiseEventResp<FormattedProfile>,
+    resp: PromiseEventResp<FormattedProfile>
   ) {
     const identifier = PlayerService.getIdentifier(reqObj.source);
     const profile = reqObj.data;
@@ -135,22 +165,30 @@ class _MatchService {
 
     try {
       if (!profile.name || !profile.name.trim()) {
-        throw new Error('Profile name must not be blank');
+        throw new Error("Profile name must not be blank");
       }
 
       const imageUrl = checkAndFilterImage(reqObj.data.image);
       if (imageUrl == null) {
-        return resp({ status: 'error', errorMsg: 'GENERIC_INVALID_IMAGE_HOST' });
+        return resp({
+          status: "error",
+          errorMsg: "GENERIC_INVALID_IMAGE_HOST",
+        });
       }
       reqObj.data.image = imageUrl;
 
-      const updatedProfile = await this.matchDB.updateProfile(identifier, profile);
+      const updatedProfile = await this.matchDB.updateProfile(
+        identifier,
+        profile
+      );
       const formattedProfile = formatProfile(updatedProfile);
 
-      resp({ status: 'ok', data: formattedProfile });
+      resp({ status: "ok", data: formattedProfile });
     } catch (e) {
-      matchLogger.error(`Failed to update profile for identifier ${identifier}, ${e.message}`);
-      resp({ status: 'error', errorMsg: MatchResp.UPDATE_FAILED });
+      matchLogger.error(
+        `Failed to update profile for identifier ${identifier}, ${e.message}`
+      );
+      resp({ status: "error", errorMsg: MatchResp.UPDATE_FAILED });
     }
   }
 
@@ -175,7 +213,6 @@ class _MatchService {
   async handleInitialize(src: number) {
     const identifier = PlayerService.getIdentifier(src);
     matchLogger.debug(`Initializing match for identifier: ${identifier}`);
-    await this.matchDB.updateLastActive(identifier);
   }
 }
 

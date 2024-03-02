@@ -1,4 +1,4 @@
-import { useResetRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { PhoneEvents } from '@typings/phone';
 import { phoneState } from './state';
 import { useApps } from '@os/apps/hooks/useApps';

@@ -18,20 +18,24 @@ export const HomeApp: React.FC = () => {
   return (
     <>
       <AppWrapper>
-        <div className=" mb-2 pt-16 text-center text-7xl text-black ">
+        <div style={{
+          fontFamily: "Poppins"
+        }} className=" mb-2 pt-16 text-center text-7xl text-black ">
           {currentHour}:{currentMinute}
         </div>
-        <div className="text-center text-sm text-black">{currentDate}</div>
+        <div style={{
+          fontFamily: "Poppins"
+        }}  className="text-center text-sm text-black font">{currentDate}</div>
 
         <Box component="div" mt={6} px={1}>
-          {apps && <GridMenu xs={3} items={[...apps.slice(4), ...externalApps]} />}
+          {apps && <GridMenu xs={3} items={[...apps, ...externalApps]} />}
         </Box>
 
-        <div className="absolute bottom-5 left-8 right-8">
+        {/* <div className="absolute bottom-5 left-8 right-8">
           <div className="h-20 w-full rounded-2xl bg-gray-200/30 backdrop-blur">
             {apps && <GridMenu xs={3} items={[...apps.slice(0, 4)]} />}
           </div>
-        </div>
+        </div> */}
       </AppWrapper>
     </>
   );
