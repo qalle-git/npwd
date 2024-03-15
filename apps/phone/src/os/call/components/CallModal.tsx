@@ -21,7 +21,7 @@ const StyledBoxRoot: React.FC<BoxProps> = styled(Box)({
 
 export const CallModal: React.FC = () => {
   const { call } = useCall();
-  const wallpaper = useWallpaper();
+  const { wallpaper } = useWallpaper();
 
   if (!call) return null;
 

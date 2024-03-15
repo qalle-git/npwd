@@ -4,7 +4,8 @@ import { useApp } from '@os/apps/hooks/useApps';
 import { useRecoilValue } from 'recoil';
 import { notifications, useSetNavbarUncollapsed } from '@os/new-notifications/state';
 import { useNotification } from '@os/new-notifications/useNotification';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { wallpaperBrightnessState } from '@apps/settings/state/settings.state';
 
 interface NotificationItemProps {
   id: string;
@@ -14,7 +15,7 @@ interface NotificationItemProps {
 export const NotificationItem: React.FC<NotificationItemProps> = ({ id, key }) => {
   const { appId, content, path } = useRecoilValue(notifications(id));
   const { markAsRead } = useNotification();
-  const { icon } = useApp(appId);
+  const { icon, color } = useApp(appId);
   const history = useHistory();
   const closeBar = useSetNavbarUncollapsed();
 
@@ -24,6 +25,12 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({ id, key }) =
     history.push(path);
   };
 
+  const { pathname } = useLocation();
+
+  const brightness = useRecoilValue(wallpaperBrightnessState);
+
+  const textColor = brightness > 128 && pathname === '/' ? 'black' : 'white';
+
   return (
     <ListItem
       divider
@@ -32,8 +39,8 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({ id, key }) =
       sx={{ pr: '28px', position: 'relative' }}
       key={key}
     >
-      {icon && <ListItemAvatar className="text-black">{icon}</ListItemAvatar>}
-      <span className=" text-sm text-black">{content}</span>
+      {icon && <ListItemAvatar className={`text-${textColor}`}>{icon}</ListItemAvatar>}
+      <span className={`text-sm text-${textColor}`}>{content}</span>
     </ListItem>
   );
 };

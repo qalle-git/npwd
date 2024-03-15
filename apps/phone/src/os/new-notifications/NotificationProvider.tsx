@@ -20,7 +20,6 @@ const styles = {
 
 export const NotificationProvider: React.FC = ({ children }) => {
   // we'll probably change this out with a recoil family
-  const [notis, setNotis] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const { getApp } = useApps();
 
