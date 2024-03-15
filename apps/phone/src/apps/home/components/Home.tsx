@@ -4,10 +4,14 @@ import { Box } from '@mui/material';
 import { GridMenu } from '@ui/components/GridMenu';
 import { useApps } from '@os/apps/hooks/useApps';
 import { useExternalApps } from '@common/hooks/useExternalApps';
+import { useRecoilValue } from 'recoil';
+import { wallpaperBrightnessState } from '@apps/settings/state/settings.state';
 
 export const HomeApp: React.FC = () => {
   const { apps } = useApps();
   const externalApps = useExternalApps();
+
+  const brightness = useRecoilValue(wallpaperBrightnessState);
 
   const currentDate = new Date().toLocaleDateString();
 
@@ -15,17 +19,29 @@ export const HomeApp: React.FC = () => {
   const currentHour = currentTime.getHours().toString().padStart(2, '0');
   const currentMinute = currentTime.getMinutes().toString().padStart(2, '0');
 
+  const textColor = brightness > 128 ? 'black' : 'white';
+
   return (
     <>
       <AppWrapper>
-        <div style={{
-          fontFamily: "Poppins"
-        }} className=" mb-2 pt-16 text-center text-7xl text-black ">
+        <div
+          style={{
+            fontFamily: 'Poppins',
+            color: textColor,
+          }}
+          className=" mb-2 pt-16 text-center text-7xl"
+        >
           {currentHour}:{currentMinute}
         </div>
-        <div style={{
-          fontFamily: "Poppins"
-        }}  className="text-center text-sm text-black font">{currentDate}</div>
+        <div
+          style={{
+            fontFamily: 'Poppins',
+            color: textColor,
+          }}
+          className="font text-center text-sm"
+        >
+          {currentDate}
+        </div>
 
         <Box component="div" mt={6} px={1}>
           {apps && <GridMenu xs={3} items={[...apps, ...externalApps]} />}
