@@ -41,6 +41,7 @@ import { usePhone } from '@os/phone/hooks';
 
 import 'dayjs/locale/sv';
 import { NotificationEvents, SystemNotificationDTO } from '@typings/notifications';
+import { ActiveCall, CallEvents } from '@typings/call';
 
 interface PhoneProps {
   notiRefCB: Dispatch<SetStateAction<HTMLElement>>;
@@ -134,21 +135,35 @@ InjectDebugData<any>([
   },
 ]);
 
-InjectDebugData<SystemNotificationDTO>([
-  {
-    app: 'SYSTEM',
-    method: NotificationEvents.CREATE_SYSTEM_NOTIFICATION,
-    data: {
-      content: 'This is a test notification',
-      controls: true,
-      duration: 5000,
-      keepOpen: true,
-      onCancel: () => console.log('Cancelled'),
-      onConfirm: () => console.log('Confirmed'),
-      uniqId: 'test',
-      secondaryTitle: 'Test Notification',
-    },
-  },
-]);
+// InjectDebugData<SystemNotificationDTO>([
+//   {
+//     app: 'SYSTEM',
+//     method: NotificationEvents.CREATE_SYSTEM_NOTIFICATION,
+//     data: {
+//       content: 'This is a test notification',
+//       controls: true,
+//       duration: 5000,
+//       keepOpen: true,
+//       onCancel: () => console.log('Cancelled'),
+//       onConfirm: () => console.log('Confirmed'),
+//       uniqId: 'test',
+//       secondaryTitle: 'Test Notification',
+//     },
+//   },
+// ]);
+
+// InjectDebugData<ActiveCall>([
+//   {
+//     app: 'CALL',
+//     method: CallEvents.SET_CALL_INFO,
+//     data: {
+//       is_accepted: true,
+//       transmitter: '131313',
+//       receiver: '2222',
+//       isTransmitter: false,
+//       label: 'Andrew Coleman',
+//     },
+//   },
+// ]);
 
 export default Phone;

@@ -9,7 +9,8 @@ import DialerNavBar from './DialerNavBar';
 import { ContactList } from '../../contacts/components/List/ContactList';
 import { DialerThemeProvider } from '../providers/DialerThemeProvider';
 import { LoadingSpinner } from '@ui/components/LoadingSpinner';
-import InjectDebugData from "@os/debug/InjectDebugData";
+import InjectDebugData from '@os/debug/InjectDebugData';
+import { MessageEvents } from '@typings/messages';
 
 export const DialerApp: React.FC = () => {
   return (
@@ -36,3 +37,16 @@ export const DialerApp: React.FC = () => {
     </DialerThemeProvider>
   );
 };
+
+InjectDebugData([
+  {
+    app: 'MESSAGES',
+    method: MessageEvents.CREATE_MESSAGE_BROADCAST,
+    data: {
+      conversationName: '704-1549',
+      conversation_id: 1,
+      message: 'Hej snygging, du har glömt att skicka min veckopeng för att jag umgås med dig...',
+      is_embed: false,
+    },
+  },
+]);

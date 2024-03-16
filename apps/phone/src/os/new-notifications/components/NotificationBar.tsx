@@ -31,6 +31,8 @@ import { UnreadNotificationBarProps } from '@typings/notifications';
 import { useNotification } from '../useNotification';
 import { BatteryFull, SignalMedium } from 'lucide-react';
 import { cn } from '@utils/css';
+import { wallpaperBrightnessState } from '@apps/settings/state/settings.state';
+import { useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,10 +80,11 @@ const useStyles = makeStyles((theme) => ({
 
 interface WrapperGridProps extends GridProps {
   tgtNoti?: UnreadNotificationBarProps;
+  textColor?: string;
   key: string | number;
 }
 
-const IconUnreadGrid: React.FC<WrapperGridProps> = ({ tgtNoti }) => {
+const IconUnreadGrid: React.FC<WrapperGridProps> = ({ tgtNoti, textColor }) => {
   const notificationTgtApp = useApp(tgtNoti.appId);
 
   return (
@@ -90,7 +93,7 @@ const IconUnreadGrid: React.FC<WrapperGridProps> = ({ tgtNoti }) => {
       key={tgtNoti.id}
       component={IconButton}
       sx={{
-        color: 'text.primary',
+        color: textColor ?? 'text.primary',
         fontSize: 'small',
       }}
     >
@@ -112,7 +115,6 @@ const UnreadNotificationListItem: React.FC<UnreadNotificationListItemProps> = ({
 
 export const NotificationBar = () => {
   const classes = useStyles();
-  const time = usePhoneTime();
   const [barCollapsed, setBarUncollapsed] = useNavbarUncollapsed();
 
   const unreadNotificationIds = useUnreadNotificationIds();
@@ -120,6 +122,12 @@ export const NotificationBar = () => {
   const unreadNotifications = useUnreadNotifications();
 
   const { markAllAsRead } = useNotification();
+
+  const { pathname } = useLocation();
+
+  const brightness = useRecoilValue(wallpaperBrightnessState);
+
+  const textColor = brightness > 128 && pathname === '/' ? 'black' : 'white';
 
   const handleClearNotis = async () => {
     setBarUncollapsed(false);
@@ -145,7 +153,7 @@ export const NotificationBar = () => {
             unreadNotifications
               .filter((val, idx, self) => idx === self.findIndex((t) => t.appId === val.appId))
               .map((notification, idx) => {
-                return <IconUnreadGrid tgtNoti={notification} key={idx} />;
+                return <IconUnreadGrid tgtNoti={notification} key={idx} textColor={textColor} />;
               })}
         </Grid>
         {/* {time && (
@@ -157,7 +165,7 @@ export const NotificationBar = () => {
         )} */}
         <div className="flex items-center justify-end">
           <div>
-            <SignalMedium />
+            <SignalMedium color={textColor} />
           </div>
           <div className="mt-1.5 text-green-300">
             <BatteryFull />

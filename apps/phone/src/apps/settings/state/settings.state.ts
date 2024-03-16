@@ -53,3 +53,8 @@ export const settingsState = atom<IPhoneSettings>({
   default: getDefaultPhoneSettings(),
   effects: [localStorageEffect],
 });
+
+export const wallpaperBrightnessState = atom<number>({
+  key: 'wallpaperBrightness',
+  default: 0,
+});
